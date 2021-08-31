@@ -1,9 +1,15 @@
 #include "Ch.h"
 
+//constructor, not sure if necessary
 Ch::Ch(){
   
 }
 
+/* function to compile data from controller
+ * As Radio transciever can only send 32 byte of data at a time
+ * the transmission is split into A and B transmissions and compiled to
+ * 16 channels.
+ */
 void Ch::compileData(){
   int i;
   int j = 0;
@@ -23,6 +29,7 @@ void Ch::compileData(){
   }
 }
 
+//function to interpret the data from the channels
 void Ch::interpretData(){
   if(channel[0] == 0 && (milB[0]+1000 < (int)millis())){
     arm = !arm;
@@ -31,6 +38,7 @@ void Ch::interpretData(){
   }
 }
 
+//builder of data, compiles and interprets
 void Ch::buildData(char* str){
   for(int i = 0; i < (int)sizeof(str); i++){
     this->str[i] = *(str+i);
@@ -39,6 +47,7 @@ void Ch::buildData(char* str){
   interpretData();
 }
 
+//true if armed
 bool Ch::isArmed(){
   return arm;
 }

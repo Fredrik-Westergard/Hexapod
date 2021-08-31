@@ -11,12 +11,12 @@ class Ch{
     char str[32]; //string received from radio
     bool arm = false; //arm boolean, if false the robot can't move
 
-    void compileData();
-    void interpretData();
+    void compileData(); //data compiler, converts radio string to channels
+    void interpretData(); //data interpretor, maps channels to axes
 
   public:
-    Ch();
-    void buildData(char* str);
-    bool isArmed();
+    Ch(); //constructor, not sure if necessary
+    void buildData(char* str); //data builder, compiles and interprets
+    bool isArmed(); //true if armed
 };
 #endif
