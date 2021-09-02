@@ -1,9 +1,5 @@
 #include "Ch.h"
 
-//constructor, not sure if necessary
-Ch::Ch(){
-  
-}
 
 /* function to compile data from controller
  * As Radio transciever can only send 32 byte of data at a time

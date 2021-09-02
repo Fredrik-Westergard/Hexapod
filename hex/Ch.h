@@ -15,7 +15,6 @@ class Ch{
     void interpretData(); //data interpretor, maps channels to axes
 
   public:
-    Ch(); //constructor, not sure if necessary
     void buildData(char* str); //data builder, compiles and interprets
     bool isArmed(); //true if armed
 };
