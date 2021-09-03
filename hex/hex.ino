@@ -6,11 +6,11 @@
 
 RF24 radio(9,8); //CE, CSN
 const byte address[6] = "00001"; //Radio address
-Ch ch;
-
 char str[32]; //sring received from radio
 
-Move mv;
+Ch ch; //channel object
+Leg leg(&ch); //leg object
+Move mv(&leg); //move object
 
 //standard setup function for arduino, runs only once
 void setup() {
@@ -36,8 +36,9 @@ void loop() {
     ch.buildData(str);
   }
   if(ch.isArmed()){
+    //calculates the angles
+    leg.calculateAngles();
     //move robot
-    
+    mv.moveLegs();
   }
-  mv.moveLegs();
 }

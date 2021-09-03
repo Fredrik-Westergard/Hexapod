@@ -1,4 +1,5 @@
 #include "Move.h"
+#include "Leg.h"
 #include <PCA9685.h>  //pca9685 the servo driver module
 #include <nRF24L01.h> //nrf24l01 is the radio transceiver module
 #include <Arduino.h>
@@ -7,10 +8,10 @@
 PCA9685 driver0(B000000); //addresses and initializes the motor drivers, set to 0
 PCA9685 driver1(B000001); //set to 1
 PCA9685_ServoEval pwmServo(102, 470); //set the min and max servo movement, -90 to +90 degrees
-Leg leg; //leg object
 
 //Move constructor
-Move::Move(){
+Move::Move(Leg* leg){
+  this->leg = leg;
   //set the offsets for the servo to desired degrees
    for(int i=0; i<3; i++){
      this->servoOffset[0][i][0] = 0;
@@ -33,17 +34,15 @@ void Move::initDrivers(){
 
 //function to move the legs to desired angles
 void Move::moveLegs(){
-  //calculates the angles
-  leg.calculateAngles();
 
   //steps through the 18 servos, and sets angles according to calculations
   for(int i = 0; i < 3; i++){
-    driver0.setChannelPWM(i*4, pwmServo.pwmForAngle(leg.getAngleC(i)+servoOffset[0][i][0]));
-    driver0.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg.getAngleB(i)+servoOffset[0][i][1]));
-    driver0.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg.getAngleA(i)+servoOffset[0][i][2]));
+    driver0.setChannelPWM(i*4, pwmServo.pwmForAngle(leg->getAngleC(i)+servoOffset[0][i][0]));
+    driver0.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg->getAngleB(i)+servoOffset[0][i][1]));
+    driver0.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg->getAngleA(i)+servoOffset[0][i][2]));
 
-    driver1.setChannelPWM(i*4, pwmServo.pwmForAngle(leg.getAngleC(2+i)+servoOffset[1][i][0]));
-    driver1.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg.getAngleB(2+i)+servoOffset[1][i][1]));
-    driver1.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg.getAngleA(2+i)+servoOffset[1][i][2]));
+    driver1.setChannelPWM(i*4, pwmServo.pwmForAngle(leg->getAngleC(2+i)+servoOffset[1][i][0]));
+    driver1.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg->getAngleB(2+i)+servoOffset[1][i][1]));
+    driver1.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg->getAngleA(2+i)+servoOffset[1][i][2]));
   } 
 }

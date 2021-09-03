@@ -32,6 +32,7 @@ void Ch::interpretData(){
     Serial.println("armed");
     milB[0] = millis();
   }
+  zOffset = map(channel[12],0,1024,120,0);
 }
 
 //builder of data, compiles and interprets
@@ -46,4 +47,8 @@ void Ch::buildData(char* str){
 //true if armed
 bool Ch::isArmed(){
   return arm;
+}
+//getter of height
+double Ch::getZoffset(){
+  return zOffset;
 }

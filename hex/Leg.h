@@ -2,6 +2,7 @@
 #define LEG_H__
 
 #include <Arduino.h>
+#include "Ch.h"
 
 class Leg{
   private:
@@ -10,17 +11,18 @@ class Leg{
     const double HIP = 50; //hip of robot leg constant
     
     const double LEGLEN = 110; //leg length constant, the length the tip of the legs are from the hip joint, in mm
-
-    double desiredHeight = 75; //desired height, in mm
     
     double angleA[6]; //angle of shin motor
     double angleB[6]; //angle of tibia motor
     double angleC[6]; //angle of hip motor
 
+    Ch* ch = NULL;
+    
     double lawOfCosines(double a, double b, double c);
     double degreesConverter(double radian);
-    double calculateDesiredLength();
+    double calculateDesiredLength(double zOffset);
 public:
+    Leg(Ch* ch);
     void calculateAngles();
     void setAngleA(double angleA, int pos);
     void setAngleB(double angleB, int pos);

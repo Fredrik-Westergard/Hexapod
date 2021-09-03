@@ -8,12 +8,14 @@
 //Move class
 class Move{
   private:
+    Leg* leg = NULL; //leg object
     double servoOffset[2][3][3]; //servo offsets, the degrees to offset the servos to match real world angles to calculated ones
 
   public:
-    Move(); //Move constructor
+    Move(Leg* leg); //Move constructor
     void initDrivers(); //initializes the motor drivers
     void moveLegs(); //moves the legs
+
 };
 
 #endif

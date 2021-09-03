@@ -1,5 +1,10 @@
 #include "Leg.h"
+#include "Ch.h"
 #include <math.h>
+
+Leg::Leg(Ch* ch){
+  this->ch = ch;
+}
 
 //function to calculate law of cosines
 double Leg::lawOfCosines(double a, double b, double c){
@@ -12,14 +17,15 @@ double Leg::degreesConverter(double radian){
 }
 
 //function to calculate desired length
-double Leg::calculateDesiredLength(){
-  return sqrt(pow(LEGLEN,2)+pow(desiredHeight,2));
+double Leg::calculateDesiredLength(double zOffset){
+  return sqrt(pow(LEGLEN,2)+pow(zOffset,2));
 }
 
 //function to calculate all angles, might get split off into smaller functions later
 void Leg::calculateAngles(){
+  double zOffset = ch->getZoffset();
   for(int i=0; i<6; i++){
-    double dlen = calculateDesiredLength();
+    double dlen = calculateDesiredLength(zOffset);
     setAngleA(degreesConverter(lawOfCosines(TIBIA,SHIN,dlen)),i);
     setAngleB(
       360-(90+(degreesConverter(asin(LEGLEN/dlen))
