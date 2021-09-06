@@ -32,7 +32,7 @@ void Ch::interpretData(){
     Serial.println("armed");
     milB[0] = millis();
   }
-  zOffset = map(channel[12],0,1024,120,0);
+  zOffset = map(channel[12],0,1024,120,40);
 }
 
 //builder of data, compiles and interprets

@@ -1,10 +1,5 @@
 #include "Leg.h"
-#include "Ch.h"
 #include <math.h>
-
-Leg::Leg(Ch* ch){
-  this->ch = ch;
-}
 
 //function to calculate law of cosines
 double Leg::lawOfCosines(double a, double b, double c){
@@ -22,19 +17,15 @@ double Leg::calculateDesiredLength(double zOffset){
 }
 
 //function to calculate all angles, might get split off into smaller functions later
-void Leg::calculateAngles(){
-  double zOffset = ch->getZoffset();
+void Leg::calculateAngles(double zOffset){
+
   for(int i=0; i<6; i++){
-    double dlen = calculateDesiredLength(zOffset);
+    double dlen = calculateDesiredLength(zOffset-zOf[i]);
     setAngleA(degreesConverter(lawOfCosines(TIBIA,SHIN,dlen)),i);
     setAngleB(
       360-(90+(degreesConverter(asin(LEGLEN/dlen))
       +degreesConverter(lawOfCosines(dlen,TIBIA,SHIN)))),i);
     setAngleC(0,i);
-    Serial.print("A: ");
-    Serial.print(getAngleA(i));
-    Serial.print(" B: ");
-    Serial.println(getAngleB(i));
   }
 }
 

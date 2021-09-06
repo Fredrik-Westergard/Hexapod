@@ -1,9 +1,6 @@
 #ifndef LEG_H__
 #define LEG_H__
 
-#include <Arduino.h>
-#include "Ch.h"
-
 class Leg{
   private:
     const double SHIN = 120; //shin of robot leg constant
@@ -16,14 +13,15 @@ class Leg{
     double angleB[6]; //angle of tibia motor
     double angleC[6]; //angle of hip motor
 
-    Ch* ch = NULL;
+    double zOf[6] = {0,0,0,0,0,0};
+    double xOf[6] = {0,0,0,0,0,0};
+    double yOf[6] = {0,0,0,0,0,0};
     
     double lawOfCosines(double a, double b, double c);
     double degreesConverter(double radian);
     double calculateDesiredLength(double zOffset);
 public:
-    Leg(Ch* ch);
-    void calculateAngles();
+    void calculateAngles(double zOffset);
     void setAngleA(double angleA, int pos);
     void setAngleB(double angleB, int pos);
     void setAngleC(double angleC, int pos);

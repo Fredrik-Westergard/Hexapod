@@ -10,8 +10,7 @@ PCA9685 driver1(B000001); //set to 1
 PCA9685_ServoEval pwmServo(102, 470); //set the min and max servo movement, -90 to +90 degrees
 
 //Move constructor
-Move::Move(Leg* leg){
-  this->leg = leg;
+Move::Move(){
   //set the offsets for the servo to desired degrees
    for(int i=0; i<3; i++){
      this->servoOffset[0][i][0] = 0;
@@ -33,7 +32,7 @@ void Move::initDrivers(){
 }
 
 //function to move the legs to desired angles
-void Move::moveLegs(){
+void Move::moveLegs(Leg* leg){
 
   //steps through the 18 servos, and sets angles according to calculations
   for(int i = 0; i < 3; i++){
@@ -41,8 +40,8 @@ void Move::moveLegs(){
     driver0.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg->getAngleB(i)+servoOffset[0][i][1]));
     driver0.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg->getAngleA(i)+servoOffset[0][i][2]));
 
-    driver1.setChannelPWM(i*4, pwmServo.pwmForAngle(leg->getAngleC(2+i)+servoOffset[1][i][0]));
-    driver1.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg->getAngleB(2+i)+servoOffset[1][i][1]));
-    driver1.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg->getAngleA(2+i)+servoOffset[1][i][2]));
+    driver1.setChannelPWM(i*4, pwmServo.pwmForAngle(leg->getAngleC(3+i)+servoOffset[1][i][0]));
+    driver1.setChannelPWM((i*4)+1, pwmServo.pwmForAngle(-leg->getAngleB(3+i)+servoOffset[1][i][1]));
+    driver1.setChannelPWM((i*4)+2, pwmServo.pwmForAngle(leg->getAngleA(3+i)+servoOffset[1][i][2]));
   } 
 }
