@@ -33,6 +33,8 @@ void Ch::interpretData(){
     milB[0] = millis();
   }
   zOffset = map(channel[12],0,1024,120,40);
+  yOffset = map(channel[15],0,1024,30,-30);
+  xOffset = map(channel[14],0,1024,30,-30);
 }
 
 //builder of data, compiles and interprets
@@ -49,6 +51,16 @@ bool Ch::isArmed(){
   return arm;
 }
 //getter of height
-double Ch::getZoffset(){
+double Ch::getZOffset(){
   return zOffset;
+}
+
+//getter of height
+double Ch::getYOffset(){
+  return yOffset;
+}
+
+//getter of height
+double Ch::getXOffset(){
+  return xOffset;
 }

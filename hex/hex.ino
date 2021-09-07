@@ -38,7 +38,9 @@ void loop() {
   }
   if(ch.isArmed()){
     //calculates the angles
-    leg.calculateAngles(ch.getZoffset());
+    leg.calculateAngles(ch.getZOffset(), 
+                        ch.getYOffset(),
+                        ch.getXOffset());
     //move robot
     mv.moveLegs(&leg);
   }

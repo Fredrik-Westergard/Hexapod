@@ -17,11 +17,12 @@ class Leg{
     double xOf[6] = {0,0,0,0,0,0};
     double yOf[6] = {0,0,0,0,0,0};
     
-    double lawOfCosines(double a, double b, double c);
+    double lawOfCosinesSSS(double a, double b, double c);
+    double lawOfCosinesSAS(double a, double b, double angle);
     double degreesConverter(double radian);
-    double calculateDesiredLength(double zOffset);
+    double calculateDesiredLength(double zOffset, double dLen);
 public:
-    void calculateAngles(double zOffset);
+    void calculateAngles(double zOffset, double yOffset, double xOffset);
     void setAngleA(double angleA, int pos);
     void setAngleB(double angleB, int pos);
     void setAngleC(double angleC, int pos);
