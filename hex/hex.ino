@@ -15,10 +15,13 @@ Move mv; //move object
 
 //standard setup function for arduino, runs only once
 void setup() {
+  //set up wire and wire clock for i2C motor drivers
   Wire.begin();
   Wire.setClock(400000);
-
+  
+  //initialize motor drivers
   mv.initDrivers();
+  
   //setup for radio
   radio.begin();
   radio.openReadingPipe(0, address);

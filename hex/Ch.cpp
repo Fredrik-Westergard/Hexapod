@@ -55,12 +55,12 @@ double Ch::getZOffset(){
   return zOffset;
 }
 
-//getter of height
+//getter of y offset, front and back
 double Ch::getYOffset(){
   return yOffset;
 }
 
-//getter of height
+//getter of x offset, side to side
 double Ch::getXOffset(){
   return xOffset;
 }
