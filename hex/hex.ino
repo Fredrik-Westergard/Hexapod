@@ -34,16 +34,19 @@ void setup() {
 
 //standard main loop
 void loop() {
+  //if there is new data from the radio
   if(radio.available()){
+    //read it
     radio.read(&str, sizeof(str));
+    //print it
     Serial.println(str);
+    //and compile it
     ch.buildData(str);
   }
-  if(ch.isArmed()){
+  //if robot is armed (button 0 is toggeled)
+  if(ch.isButtonToggeled(0)){
     //calculates the angles
-    leg.calculateAngles(ch.getZOffset(), 
-                        ch.getYOffset(),
-                        ch.getXOffset());
+    leg.calculateAngles(ch);
     //move robot
     mv.moveLegs(&leg);
   }

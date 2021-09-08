@@ -1,4 +1,5 @@
 #include "Leg.h"
+#include "Ch.h"
 #include <math.h>
 #include <Arduino.h>
 
@@ -22,7 +23,16 @@ double Leg::calculateDesiredLength(double zOffset, double dLen){
 }
 
 //function to calculate all angles, might get split off into smaller functions later
-void Leg::calculateAngles(double zOffset, double yOffset, double xOffset){
+void Leg::calculateAngles(Ch ch){
+
+  //get offsets and angles from Ch
+  double zOffset = ch.getZOffset();
+  double yOffset = ch.getYOffset();
+  double xOffset = ch.getXOffset();
+  double zAngle = ch.getZAngle();
+  double yAngle = ch.getYAngle();
+  double xAngle = ch.getXAngle();
+  
   //negative modifier for if the angles are negative
   int xNeg[6] = {1,1,1,1,1,1};
   int yNeg[6] = {1,1,1,1,1,1};
@@ -64,10 +74,10 @@ void Leg::calculateAngles(double zOffset, double yOffset, double xOffset){
 
   //calculate second y angle to make caluclating x angle possible
   yAd[0] = 90+(degreesConverter(asin((sin(((45*yNeg[0])+90)/(180.0/M_PI))*LEGLEN)/yLen[0]))*xNeg[0]);
-  yAd[1] = 90+(degreesConverter(asin((sin((90*yNeg[1])/(180.0/M_PI))*LEGLEN)/yLen[1]))*xNeg[1]);
+  yAd[1] = 90+(degreesConverter(asin((sin((90*xNeg[1])/(180.0/M_PI))*LEGLEN)/yLen[1])));
   yAd[2] = 90+(degreesConverter(asin((sin(((45*yNeg[2])+90)/(180.0/M_PI))*LEGLEN)/yLen[2]))*xNeg[2]);
   yAd[3] = 90+(degreesConverter(asin((sin(((45*yNeg[3])+90)/(180.0/M_PI))*LEGLEN)/yLen[3]))*xNeg[3]*-1);  
-  yAd[4] = 90+(degreesConverter(asin((sin((90*yNeg[4])/(180.0/M_PI))*LEGLEN)/yLen[4]))*xNeg[4]*-1);
+  yAd[4] = 90+(degreesConverter(asin((sin((90*xNeg[4])/(180.0/M_PI))*LEGLEN)/yLen[4]))*-1);
   yAd[5] = 90+(degreesConverter(asin((sin(((45*yNeg[5])+90)/(180.0/M_PI))*LEGLEN)/yLen[5]))*xNeg[5]*-1);
 
   //calculate new leg length for x triangle

@@ -14,7 +14,6 @@ class Move{
     Move(); //Move constructor
     void initDrivers(); //initializes the motor drivers
     void moveLegs(Leg* leg); //moves the legs
-
 };
 
 #endif

@@ -27,14 +27,19 @@ void Ch::compileData(){
 
 //function to interpret the data from the channels
 void Ch::interpretData(){
-  if(channel[0] == 0 && (milB[0]+1000 < (int)millis())){
-    arm = !arm;
-    Serial.println("armed");
-    milB[0] = millis();
+  for(int i=0; i<10; i++){
+    if(channel[i] == 0 && (milB[i]+1000 < (int)millis())){
+      buttons[i] = !buttons[i];
+      milB[i] = millis();
+    }
   }
+  
   zOffset = map(channel[12],0,1024,120,40);
   yOffset = map(channel[15],0,1024,30,-30);
   xOffset = map(channel[14],0,1024,30,-30);
+  zAngle = map(channel[13],0,1024,30,-30);
+  yAngle = map(channel[11],0,1024,30,-30);
+  xAngle = map(channel[10],0,1024,30,-30);
 }
 
 //builder of data, compiles and interprets
@@ -47,8 +52,8 @@ void Ch::buildData(char* str){
 }
 
 //true if armed
-bool Ch::isArmed(){
-  return arm;
+bool Ch::isButtonToggeled(int num){
+  return buttons[num];
 }
 //getter of height
 double Ch::getZOffset(){
@@ -63,4 +68,18 @@ double Ch::getYOffset(){
 //getter of x offset, side to side
 double Ch::getXOffset(){
   return xOffset;
+}
+//getter of z Angle, yaw
+double Ch::getZAngle(){
+  return zAngle;
+}
+
+//getter of y angle, pitch
+double Ch::getYAngle(){
+  return yAngle;
+}
+
+//getter of x angle, roll
+double Ch::getXAngle(){
+  return xAngle;
 }
