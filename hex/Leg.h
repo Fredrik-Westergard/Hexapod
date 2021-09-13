@@ -8,7 +8,8 @@ class Leg{
     const double SHIN = 120; //shin of robot leg constant
     const double TIBIA = 65; //tibia of robot leg constant
     const double HIP = 50; //hip of robot leg constant
-    
+    const double BODYX1 = 58;
+    const double BODYX2 = 90;
     const double LEGLEN = 110; //leg length constant, the length the tip of the legs are from the hip joint, in mm
     
     double angleA[6]; //angle of shin motor
@@ -23,6 +24,7 @@ class Leg{
     double lawOfCosinesSAS(double a, double b, double angle); //calculate law of cosines when you have two sides and one angle between them
     double degreesConverter(double radian); //convert from radians to degrees
     double calculateDesiredLength(double zOffset, double dLen); //desired length calculator
+    double calculateHeronsFormula(double a, double b);
 public:
     void calculateAngles(Ch ch);  //calculates all angles and sets them
     void setAngleA(double angleA, int pos); //set A angle, shin-tibia

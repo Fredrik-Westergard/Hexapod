@@ -44,9 +44,7 @@ void Ch::interpretData(){
 
 //builder of data, compiles and interprets
 void Ch::buildData(char* str){
-  for(int i = 0; i < (int)sizeof(str); i++){
-    this->str[i] = *(str+i);
-  }
+  this->str = str;
   compileData();
   interpretData();
 }

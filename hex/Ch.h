@@ -8,7 +8,7 @@ class Ch{
   private:
     int milB[10] = {0,0,0,0,0,0,0,0,0,0}; //milliseconds for button presses
     int channel[16]; //channels of the controller
-    char str[32]; //string received from radio
+    char* str; //string received from radio
     bool buttons[10] = {false,false,false,false,false,
                         false,false,false,false,false}; //arm boolean, if false the robot can't move
     double zOffset = 75; //height global offset, set 75 default, change if signal is received
