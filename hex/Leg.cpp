@@ -67,10 +67,10 @@ void Leg::calculateAngles(Ch ch){
     zOfr[i] = calculateHeronsFormula(bodyX,temp)*xNr;
     xOfr[i] = sqrt(pow(temp,2)-pow(zOfr[i],2));
     
-    xNt[i] = (xOffset+xOf[i]-xOfr[i]<=0)?-1:1;
+    xNt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1)<=0)?-1:1;
     yNt[i] = (yOffset+yOf[i]<=0)?-1:1;
     yOt[i] = (yOffset+yOf[i])*yNt[i];
-    xOt[i] = (xOffset+xOf[i]-xOfr[i])*xNt[i];
+    xOt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1))*xNt[i];
   }
   
   //calculate new leg length with y offfset
