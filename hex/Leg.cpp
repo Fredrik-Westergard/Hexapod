@@ -3,11 +3,12 @@
 #include <math.h>
 #include <Arduino.h>
 
-//function to calculate law of cosines
+//function to calculate law of cosines for side side side triangle
 double Leg::lawOfCosinesSSS(double a, double b, double c){
   return acos((pow(a,2)+pow(b,2)-pow(c,2))/(2*a*b));
 }
 
+//function to calculate law of cosines for side angle side triangle
 double Leg::lawOfCosinesSAS(double b, double a, double angle){
   return sqrt((pow(a,2)+pow(b,2))-(2*a*b*cos(radianConverter(angle))));
 }
@@ -17,6 +18,7 @@ double Leg::degreesConverter(double radian){
   return radian*(180.0/M_PI);
 }
 
+//function to convert degrees to radians
 double Leg::radianConverter(double degree){
   return degree*(M_PI/180.0);
 }
@@ -26,6 +28,7 @@ double Leg::calculateDesiredLength(double zOffset, double dLen){
   return sqrt(pow(dLen,2)+pow(zOffset,2));
 }
 
+//function to calculate herons formula, gets height of triangle
 double Leg::calculateHeronsFormula(double a, double b){
   double c = (a+a+b)/2;
   return sqrt(c*(c-a)*(c-a)*(c-b))/(0.5*a);
@@ -41,109 +44,69 @@ void Leg::calculateAngles(Ch ch){
   double zAngle = ch.getZAngle();
   double yAngle = ch.getYAngle();
   double xAngle = ch.getXAngle();
-  
-  //negative modifier for if the angles are negative
-  int xNt[6] = {1,1,1,1,1,1};
-  int yNt[6] = {1,1,1,1,1,1};
-  int xN[6] = {1,1,1,1,1,1};
-  int yNr2[6] = {1,1,1,1,1,1};
-  
-  double yA[6];   //y angle
-  double yLen[6]; //y leg length
-  double yOt[6];  //y offset total
 
-  double xA[6];   //x angle
-  double xLen[6]; //x leg length
-  double xOt[6];  //x offset total
-
-  double yAd[6];  //second angle in y triangle
-
-  double zOfr[6];
-  double xOfr[6];
-  double yOfr[6];
-  double zOfr2[6];
-  double xOfr2[6];
-  double yOfr2[6];
-
-  //set x/yNt and make x/yOt positive
   for(int i=0; i<6; i++){
+    //set body constants
     double bodyX = (i == 1 || i == 4)?(BODYX2+LEGLEN):(BODYX1+(sin(radianConverter(45))*LEGLEN));
     double bodyY = (i == 1 || i == 4)?(LEGLEN):BODYY+(sin(radianConverter(45))*LEGLEN);
     double bodyZ = (i == 1 || i == 4)?(BODYX2+LEGLEN):(lawOfCosinesSAS(LEGLEN,BODYXY,45+BODYA));
-    
+
+    //set "negative-ify" modifiers
     int xNr = (xAngle < 0)?-1:1;
     int yNr = (yAngle < 0)?-1:1;
     int zNr = (zAngle < 0)?-1:1;
-    int zNr2 = (i == 0 || i == 3)?1:-1;
-    xN[i] = (i < 3)?-1:1;
-    yNr2[i] = (i == 0 || i == 3)?-1:1;
-    
+    int xN = (i < 3)?-1:1;
+    int yNr2 = (i == 0 || i == 3)?-1:1;
+    int yNt2 = (i == 2 || i == 5)?-1:1;
+    int xNt2 = (i == 0 || i == 3 || i == 4)?-1:1;
+
+    //calculate x rotation
     double temp = 2*bodyX*cos(radianConverter(((180-(xAngle*xNr))/2)));
-    zOfr[i] = (calculateHeronsFormula(bodyX,temp)*xNr)*xN[i];
-    xOfr[i] = sqrt(pow(temp,2)-pow(zOfr[i],2));
-    
+    double zOfr = (calculateHeronsFormula(bodyX,temp)*xNr)*xN;
+    double xOfr = sqrt(pow(temp,2)-pow(zOfr,2));
+
+    //calculate y rotation
     double temp2 = 2*bodyY*cos(radianConverter(((180-(yAngle*yNr))/2)));
-    double zOfr2temp = (i != 1 && i != 4)?(calculateHeronsFormula(bodyY,temp2)*yNr)*yNr2[i]:0;
-    zOfr2[i] = zOfr2temp;
-    yOfr[i] = sqrt(pow(temp2,2)-pow(zOfr2[i],2));
-    
-    xOfr2[i] = ((((bodyZ*(sin(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAY[i])*zNr))*xN[i];
-    yOfr2[i] = ((((bodyZ*(cos(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAX[i])*zNr))*-1;    
-    
-    yNt[i] = (yOffset+yOf[i]+yOfr2[i]-(yOfr[i]*yNr2[i]*-1)<=0)?-1:1;    
-    xNt[i] = (xOffset+xOf[i]+xOfr2[i]-(xOfr[i]*xN[i]*-1)<=0)?-1:1;
-    yOt[i] = (yOffset+yOf[i]+yOfr2[i]-(yOfr[i]*yNr2[i]*-1))*yNt[i];
-    xOt[i] = (xOffset+xOf[i]+xOfr2[i]-(xOfr[i]*xN[i]*-1))*xNt[i];   
-  }
-  
-  //calculate new leg length with y offfset
-  yLen[0] = lawOfCosinesSAS(yOt[0],LEGLEN,(45*yNt[0])+90);
-  yLen[1] = lawOfCosinesSAS(yOt[1],LEGLEN,90*yNt[1]);
-  yLen[2] = lawOfCosinesSAS(yOt[2],LEGLEN,(45*yNt[2]*-1)+90);
-  yLen[3] = lawOfCosinesSAS(yOt[3],LEGLEN,(45*yNt[3])+90);
-  yLen[4] = lawOfCosinesSAS(yOt[4],LEGLEN,90*yNt[4]);
-  yLen[5] = lawOfCosinesSAS(yOt[5],LEGLEN,(45*yNt[5]*-1)+90);
+    double zOfr2temp = (i != 1 && i != 4)?(calculateHeronsFormula(bodyY,temp2)*yNr)*yNr2:0;
+    double zOfr2 = zOfr2temp;
+    double yOfr = sqrt(pow(temp2,2)-pow(zOfr2,2));
 
-  //calculate new y angle
-  yA[0] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[0],yOt[0]))*yNt[0]*-1;
-  yA[1] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[1],yOt[1]))*yNt[1]*-1;
-  yA[2] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[2],yOt[2]))*yNt[2]*-1;
-  yA[3] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[3],yOt[3]))*yNt[3];
-  yA[4] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[4],yOt[4]))*yNt[4];
-  yA[5] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[5],yOt[5]))*yNt[5];
+    //calculate z rotation
+    double xOfr2 = ((((bodyZ*(sin(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAX[i])*zNr))*xN;
+    double yOfr2 = ((((bodyZ*(cos(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAY[i])*zNr))*-1;    
 
-  //calculate second y angle to make caluclating x angle possible
-  yAd[0] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[0])+90)))*LEGLEN)/yLen[0]))*xNt[0]);
-  yAd[1] = 90+(degreesConverter(asin((sin(radianConverter((90*xNt[1])))*LEGLEN)/yLen[1])));
-  yAd[2] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[2])+90)))*LEGLEN)/yLen[2]))*xNt[2]);
-  yAd[3] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[3])+90)))*LEGLEN)/yLen[3]))*xNt[3]*-1);  
-  yAd[4] = 90+(degreesConverter(asin((sin(radianConverter((90*xNt[4])))*LEGLEN)/yLen[4]))*-1);
-  yAd[5] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[5])+90)))*LEGLEN)/yLen[5]))*xNt[5]*-1);
+    //combine all x and y offsets and make it positive if it's negative
+    int yNt = (yOffset+yOf[i]+yOfr2-(yOfr*yNr2*-1)<=0)?-1:1;    
+    int xNt = (xOffset+xOf[i]+xOfr2-(xOfr*xN*-1)<=0)?-1:1;
+    double yOt = (yOffset+yOf[i]+yOfr2-(yOfr*yNr2*-1))*yNt;
+    double xOt = (xOffset+xOf[i]+xOfr2-(xOfr*xN*-1))*xNt;
 
-  //calculate new leg length for x triangle
-  xLen[0] = lawOfCosinesSAS(xOt[0],yLen[0],yAd[0]);
-  xLen[1] = lawOfCosinesSAS(xOt[1],yLen[1],yAd[1]);
-  xLen[2] = lawOfCosinesSAS(xOt[2],yLen[2],yAd[2]);
-  xLen[3] = lawOfCosinesSAS(xOt[3],yLen[3],yAd[3]);
-  xLen[4] = lawOfCosinesSAS(xOt[4],yLen[4],yAd[4]);
-  xLen[5] = lawOfCosinesSAS(xOt[5],yLen[5],yAd[5]);
+    //calculate y translation
+    double yLen;
+    double yAd;
+    if(i == 1 || i == 4){
+      yLen = lawOfCosinesSAS(yOt, LEGLEN, 90*yNt);
+      yAd = 90+(degreesConverter(asin((sin(radianConverter((90*xNt)))*LEGLEN)/yLen))*xN*-1);
+    }
+    else{
+      yLen = lawOfCosinesSAS(yOt, LEGLEN, (45*yNt*yNt2)+90);
+      yAd = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt)+90)))*LEGLEN)/yLen))*xNt*xN*-1);
+    }
+    double yA = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen,yOt))*yNt*xN;
 
-  //calculate new x angle, angle C
-  xA[0] = yA[0]-(degreesConverter(lawOfCosinesSSS(xLen[0],yLen[0],xOt[0]))*xNt[0]*-1);
-  xA[1] = yA[1]-(degreesConverter(lawOfCosinesSSS(xLen[1],yLen[1],xOt[1]))*xNt[1]);
-  xA[2] = yA[2]-(degreesConverter(lawOfCosinesSSS(xLen[2],yLen[2],xOt[2]))*xNt[2]);
-  xA[3] = yA[3]-(degreesConverter(lawOfCosinesSSS(xLen[3],yLen[3],xOt[3]))*xNt[3]*-1);
-  xA[4] = yA[4]-(degreesConverter(lawOfCosinesSSS(xLen[4],yLen[4],xOt[4]))*xNt[4]*-1);
-  xA[5] = yA[5]-(degreesConverter(lawOfCosinesSSS(xLen[5],yLen[5],xOt[5]))*xNt[5]);
-  
-  for(int i=0; i<6; i++){
-    double dLen = calculateDesiredLength((zOffset-zOf[i])-(zOfr[i]-zOfr2[i]), xLen[i]); //set desired leg length
-    
+    //calculate x translation
+    double xLen = lawOfCosinesSAS(xOt,yLen,yAd);
+    double xA = yA-(degreesConverter(lawOfCosinesSSS(xLen,yLen,xOt))*xNt*xNt2);
+
+    //calculate desired length of leg
+    double dLen = calculateDesiredLength((zOffset-zOf[i])-(zOfr-zOfr2), xLen);
+
+    //calculate and set angles for motors
     setAngleA(degreesConverter(lawOfCosinesSSS(TIBIA,SHIN,dLen)),i); //calculate and set angle A, shin-tibia joint
     setAngleB(
-      360-(90+(degreesConverter(asin(xLen[i]/dLen))
+      360-(90+(degreesConverter(asin(xLen/dLen))
       +degreesConverter(lawOfCosinesSSS(dLen,TIBIA,SHIN)))),i); //calculate and set angle B, tibia-hip joint
-    setAngleC(xA[i],i); //set angle C, hip-body joint
+    setAngleC(xA,i); //set angle C, hip-body joint
   }
 }
 
