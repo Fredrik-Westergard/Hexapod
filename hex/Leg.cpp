@@ -41,7 +41,9 @@ void Leg::calculateAngles(Ch ch){
   //negative modifier for if the angles are negative
   int xNt[6] = {1,1,1,1,1,1};
   int yNt[6] = {1,1,1,1,1,1};
+  int xNt2[6] = {1,1,1,1,1,1};
   int xNr2[6] = {1,1,1,1,1,1};
+  int yNr2[6] = {1,1,1,1,1,1};
   
   double yA[6];   //y angle
   double yLen[6]; //y leg length
@@ -54,6 +56,7 @@ void Leg::calculateAngles(Ch ch){
   double yAd[6];  //second angle in y triangle
 
   double zOfr[6];
+  double zOfr2[6];
   double xOfr[6];
   double yOfr[6];
 
@@ -61,16 +64,34 @@ void Leg::calculateAngles(Ch ch){
   for(int i=0; i<6; i++){
     double bodyX = (i == 1 || i == 4)?(BODYX2+LEGLEN):(BODYX1+(sin(45/(180.0/M_PI))*LEGLEN));
     int xNr = (xAngle < 0)?-1:1;
+    int yNr = (yAngle < 0)?-1:1;
     xNr2[i] = (i < 3)?-1:1;
+    yNr2[i] = (i == 0 || i == 3)?-1:1;
+    xNt2[i] = (i < 3)?-1:1;
     
     double temp = 2*bodyX*cos(((180-(xAngle*xNr))/2)/(180.0/M_PI));
-    zOfr[i] = calculateHeronsFormula(bodyX,temp)*xNr;
+    zOfr[i] = (calculateHeronsFormula(bodyX,temp)*xNr)*xNr2[i];
     xOfr[i] = sqrt(pow(temp,2)-pow(zOfr[i],2));
     
+    double temp2;
+    if(i != 1 && i != 4){
+      double bodyY = BODYY+(sin(45/(180.0/M_PI))*LEGLEN);
+      temp2 = 2*bodyY*cos(((180-(yAngle*yNr))/2)/(180.0/M_PI));
+      zOfr2[i] = (calculateHeronsFormula(bodyY,temp2)*yNr)*yNr2[i];
+      yOfr[i] = sqrt(pow(temp2,2)-pow(zOfr2[i],2));
+    }
+    else{
+      temp2 = 2*LEGLEN*cos(((180-(yAngle*yNr))/2)/(180.0/M_PI));
+      zOfr2[i] = (calculateHeronsFormula(LEGLEN,temp2)*yNr);
+      yOfr[i] = sqrt(pow(temp2,2)-pow(zOfr2[i],2))*yNr*-1;
+      zOfr2[i] = 0;
+    }
+    
+        
     xNt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1)<=0)?-1:1;
-    yNt[i] = (yOffset+yOf[i]<=0)?-1:1;
-    yOt[i] = (yOffset+yOf[i])*yNt[i];
-    xOt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1))*xNt[i];
+    yNt[i] = (yOffset+yOf[i]-(yOfr[i]*yNr2[i]*-1)<=0)?-1:1;
+    yOt[i] = (yOffset+yOf[i]-(yOfr[i]*yNr2[i]*-1))*yNt[i];
+    xOt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1))*xNt[i];   
   }
   
   //calculate new leg length with y offfset
@@ -114,7 +135,7 @@ void Leg::calculateAngles(Ch ch){
   xA[5] = yA[5]-(degreesConverter(lawOfCosinesSSS(xLen[5],yLen[5],xOt[5]))*xNt[5]);
   
   for(int i=0; i<6; i++){
-    double dLen = calculateDesiredLength(zOffset-zOf[i]-(zOfr[i]*xNr2[i]), xLen[i]); //set desired leg length
+    double dLen = calculateDesiredLength((zOffset-zOf[i])-(zOfr[i]-zOfr2[i]), xLen[i]); //set desired leg length
     
     setAngleA(degreesConverter(lawOfCosinesSSS(TIBIA,SHIN,dLen)),i); //calculate and set angle A, shin-tibia joint
     setAngleB(

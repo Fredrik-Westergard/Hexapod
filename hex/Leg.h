@@ -10,6 +10,7 @@ class Leg{
     const double HIP = 50; //hip of robot leg constant
     const double BODYX1 = 58;
     const double BODYX2 = 90;
+    const double BODYY = 107;
     const double LEGLEN = 110; //leg length constant, the length the tip of the legs are from the hip joint, in mm
     
     double angleA[6]; //angle of shin motor
