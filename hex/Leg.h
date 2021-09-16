@@ -11,7 +11,13 @@ class Leg{
     const double BODYX1 = 58;
     const double BODYX2 = 90;
     const double BODYY = 107;
+    const double BODYXY = 121.709;
+    const double BODYA = 61.541;
     const double LEGLEN = 110; //leg length constant, the length the tip of the legs are from the hip joint, in mm
+
+    const double ANG[6] = {45.0, 90.0, 135.0, 225.0, 270.0, 315.0};
+    const double ZAX[6] = {131.408,0,-131.408,-131.408,0,131.408};
+    const double ZAY[6] = {131.408,200,131.408,-131.408,-200,-131.408};
     
     double angleA[6]; //angle of shin motor
     double angleB[6]; //angle of tibia motor
@@ -23,6 +29,7 @@ class Leg{
     
     double lawOfCosinesSSS(double a, double b, double c); //calculate law of cosines when you have all sides 
     double lawOfCosinesSAS(double a, double b, double angle); //calculate law of cosines when you have two sides and one angle between them
+    double radianConverter(double degree);
     double degreesConverter(double radian); //convert from radians to degrees
     double calculateDesiredLength(double zOffset, double dLen); //desired length calculator
     double calculateHeronsFormula(double a, double b);

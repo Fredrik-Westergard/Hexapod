@@ -9,12 +9,16 @@ double Leg::lawOfCosinesSSS(double a, double b, double c){
 }
 
 double Leg::lawOfCosinesSAS(double b, double a, double angle){
-  return sqrt((pow(a,2)+pow(b,2))-(2*a*b*cos(angle/(180.0/M_PI))));
+  return sqrt((pow(a,2)+pow(b,2))-(2*a*b*cos(radianConverter(angle))));
 }
 
 //function to convert radians to degrees
 double Leg::degreesConverter(double radian){
   return radian*(180.0/M_PI);
+}
+
+double Leg::radianConverter(double degree){
+  return degree*(M_PI/180.0);
 }
 
 //function to calculate desired length
@@ -41,8 +45,7 @@ void Leg::calculateAngles(Ch ch){
   //negative modifier for if the angles are negative
   int xNt[6] = {1,1,1,1,1,1};
   int yNt[6] = {1,1,1,1,1,1};
-  int xNt2[6] = {1,1,1,1,1,1};
-  int xNr2[6] = {1,1,1,1,1,1};
+  int xN[6] = {1,1,1,1,1,1};
   int yNr2[6] = {1,1,1,1,1,1};
   
   double yA[6];   //y angle
@@ -56,42 +59,41 @@ void Leg::calculateAngles(Ch ch){
   double yAd[6];  //second angle in y triangle
 
   double zOfr[6];
-  double zOfr2[6];
   double xOfr[6];
   double yOfr[6];
+  double zOfr2[6];
+  double xOfr2[6];
+  double yOfr2[6];
 
   //set x/yNt and make x/yOt positive
   for(int i=0; i<6; i++){
-    double bodyX = (i == 1 || i == 4)?(BODYX2+LEGLEN):(BODYX1+(sin(45/(180.0/M_PI))*LEGLEN));
+    double bodyX = (i == 1 || i == 4)?(BODYX2+LEGLEN):(BODYX1+(sin(radianConverter(45))*LEGLEN));
+    double bodyY = (i == 1 || i == 4)?(LEGLEN):BODYY+(sin(radianConverter(45))*LEGLEN);
+    double bodyZ = (i == 1 || i == 4)?(BODYX2+LEGLEN):(lawOfCosinesSAS(LEGLEN,BODYXY,45+BODYA));
+    
     int xNr = (xAngle < 0)?-1:1;
     int yNr = (yAngle < 0)?-1:1;
-    xNr2[i] = (i < 3)?-1:1;
+    int zNr = (zAngle < 0)?-1:1;
+    int zNr2 = (i == 0 || i == 3)?1:-1;
+    xN[i] = (i < 3)?-1:1;
     yNr2[i] = (i == 0 || i == 3)?-1:1;
-    xNt2[i] = (i < 3)?-1:1;
     
-    double temp = 2*bodyX*cos(((180-(xAngle*xNr))/2)/(180.0/M_PI));
-    zOfr[i] = (calculateHeronsFormula(bodyX,temp)*xNr)*xNr2[i];
+    double temp = 2*bodyX*cos(radianConverter(((180-(xAngle*xNr))/2)));
+    zOfr[i] = (calculateHeronsFormula(bodyX,temp)*xNr)*xN[i];
     xOfr[i] = sqrt(pow(temp,2)-pow(zOfr[i],2));
     
-    double temp2;
-    if(i != 1 && i != 4){
-      double bodyY = BODYY+(sin(45/(180.0/M_PI))*LEGLEN);
-      temp2 = 2*bodyY*cos(((180-(yAngle*yNr))/2)/(180.0/M_PI));
-      zOfr2[i] = (calculateHeronsFormula(bodyY,temp2)*yNr)*yNr2[i];
-      yOfr[i] = sqrt(pow(temp2,2)-pow(zOfr2[i],2));
-    }
-    else{
-      temp2 = 2*LEGLEN*cos(((180-(yAngle*yNr))/2)/(180.0/M_PI));
-      zOfr2[i] = (calculateHeronsFormula(LEGLEN,temp2)*yNr);
-      yOfr[i] = sqrt(pow(temp2,2)-pow(zOfr2[i],2))*yNr*-1;
-      zOfr2[i] = 0;
-    }
+    double temp2 = 2*bodyY*cos(radianConverter(((180-(yAngle*yNr))/2)));
+    double zOfr2temp = (i != 1 && i != 4)?(calculateHeronsFormula(bodyY,temp2)*yNr)*yNr2[i]:0;
+    zOfr2[i] = zOfr2temp;
+    yOfr[i] = sqrt(pow(temp2,2)-pow(zOfr2[i],2));
     
-        
-    xNt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1)<=0)?-1:1;
-    yNt[i] = (yOffset+yOf[i]-(yOfr[i]*yNr2[i]*-1)<=0)?-1:1;
-    yOt[i] = (yOffset+yOf[i]-(yOfr[i]*yNr2[i]*-1))*yNt[i];
-    xOt[i] = (xOffset+xOf[i]-(xOfr[i]*xNr2[i]*-1))*xNt[i];   
+    xOfr2[i] = ((((bodyZ*(sin(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAY[i])*zNr))*xN[i];
+    yOfr2[i] = ((((bodyZ*(cos(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAX[i])*zNr))*-1;    
+    
+    yNt[i] = (yOffset+yOf[i]+yOfr2[i]-(yOfr[i]*yNr2[i]*-1)<=0)?-1:1;    
+    xNt[i] = (xOffset+xOf[i]+xOfr2[i]-(xOfr[i]*xN[i]*-1)<=0)?-1:1;
+    yOt[i] = (yOffset+yOf[i]+yOfr2[i]-(yOfr[i]*yNr2[i]*-1))*yNt[i];
+    xOt[i] = (xOffset+xOf[i]+xOfr2[i]-(xOfr[i]*xN[i]*-1))*xNt[i];   
   }
   
   //calculate new leg length with y offfset
@@ -111,12 +113,12 @@ void Leg::calculateAngles(Ch ch){
   yA[5] = degreesConverter(lawOfCosinesSSS(LEGLEN,yLen[5],yOt[5]))*yNt[5];
 
   //calculate second y angle to make caluclating x angle possible
-  yAd[0] = 90+(degreesConverter(asin((sin(((45*yNt[0])+90)/(180.0/M_PI))*LEGLEN)/yLen[0]))*xNt[0]);
-  yAd[1] = 90+(degreesConverter(asin((sin((90*xNt[1])/(180.0/M_PI))*LEGLEN)/yLen[1])));
-  yAd[2] = 90+(degreesConverter(asin((sin(((45*yNt[2])+90)/(180.0/M_PI))*LEGLEN)/yLen[2]))*xNt[2]);
-  yAd[3] = 90+(degreesConverter(asin((sin(((45*yNt[3])+90)/(180.0/M_PI))*LEGLEN)/yLen[3]))*xNt[3]*-1);  
-  yAd[4] = 90+(degreesConverter(asin((sin((90*xNt[4])/(180.0/M_PI))*LEGLEN)/yLen[4]))*-1);
-  yAd[5] = 90+(degreesConverter(asin((sin(((45*yNt[5])+90)/(180.0/M_PI))*LEGLEN)/yLen[5]))*xNt[5]*-1);
+  yAd[0] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[0])+90)))*LEGLEN)/yLen[0]))*xNt[0]);
+  yAd[1] = 90+(degreesConverter(asin((sin(radianConverter((90*xNt[1])))*LEGLEN)/yLen[1])));
+  yAd[2] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[2])+90)))*LEGLEN)/yLen[2]))*xNt[2]);
+  yAd[3] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[3])+90)))*LEGLEN)/yLen[3]))*xNt[3]*-1);  
+  yAd[4] = 90+(degreesConverter(asin((sin(radianConverter((90*xNt[4])))*LEGLEN)/yLen[4]))*-1);
+  yAd[5] = 90+(degreesConverter(asin((sin(radianConverter(((45*yNt[5])+90)))*LEGLEN)/yLen[5]))*xNt[5]*-1);
 
   //calculate new leg length for x triangle
   xLen[0] = lawOfCosinesSAS(xOt[0],yLen[0],yAd[0]);
