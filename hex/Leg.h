@@ -35,12 +35,14 @@ class Leg{
     double calculateHeronsFormula(double a, double b); //calculate herons formula, get height of triangle. used on isoscelece triangle so only tow sides are needed
 public:
     void calculateAngles(Ch ch);  //calculates all angles and sets them
+    void calculateAnglesWalk(double zOffset, double yOffset, double xOffset, double zAngle, double yAngle, double xAngle);
     void setAngleA(double angleA, int pos); //set A angle, shin-tibia
     void setAngleB(double angleB, int pos); //set B angle, tibia-hip
     void setAngleC(double angleC, int pos); //set C angle, hip-body
     double getAngleA(int pos); //get A angle, shin-tibia
     double getAngleB(int pos); //get B angle, tibia-hip
     double getAngleC(int pos); //get C angle, hip-body
+    void setZOf(double a, double b, double c, double d, double e, double f);
 };
 
 #endif

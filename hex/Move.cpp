@@ -12,14 +12,29 @@ PCA9685_ServoEval pwmServo(102, 470); //set the min and max servo movement, -90 
 //Move constructor
 Move::Move(){
   //set the offsets for the servo to desired degrees
-   for(int i=0; i<3; i++){
-     this->servoOffset[0][i][0] = 0;
-     this->servoOffset[0][i][1] = 187.74;
-     this->servoOffset[0][i][2] = -100.27;
-     this->servoOffset[1][i][0] = 0;
-     this->servoOffset[1][i][1] = 187.74;
-     this->servoOffset[1][i][2] = -100.27;
-   } 
+   this->servoOffset[0][0][0] = 0;
+   this->servoOffset[0][0][1] = 187.74;
+   this->servoOffset[0][0][2] = -100.27;
+   
+   this->servoOffset[0][1][0] = 0;
+   this->servoOffset[0][1][1] = 187.74+3.58977;
+   this->servoOffset[0][1][2] = -(100.27+15.5942);
+   
+   this->servoOffset[0][2][0] = 0;
+   this->servoOffset[0][2][1] = 187.74-0.403734;
+   this->servoOffset[0][2][2] = -(100.27-5.22749);
+   
+   this->servoOffset[1][0][0] = 0;
+   this->servoOffset[1][0][1] = 187.74+0.906559;
+   this->servoOffset[1][0][2] = -(100.27+7.84103);
+   
+   this->servoOffset[1][1][0] = 0;
+   this->servoOffset[1][1][1] = 187.74;
+   this->servoOffset[1][1][2] = -100.27;
+   
+   this->servoOffset[1][2][0] = 0;
+   this->servoOffset[1][2][1] = 187.74+0.906559;
+   this->servoOffset[1][2][2] = -(100.27+7.84103);
 }
 
 //initializes the motor drivers

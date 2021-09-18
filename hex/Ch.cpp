@@ -35,11 +35,11 @@ void Ch::interpretData(){
   }
   
   zOffset = map(channel[12],0,1024,120,40);
-  yOffset = map(channel[15],0,1024,30,-30);
-  xOffset = map(channel[14],0,1024,30,-30);
-  zAngle = map(channel[13],0,1024,30,-30);
-  yAngle = map(channel[11],0,1024,25,-25);
-  xAngle = map(channel[10],0,1024,-25,25);
+  yOffset = map(channel[15],0,1024,40,-40);
+  xOffset = map(channel[14],0,1024,40,-40);
+  zAngle = map(channel[13],0,1024,25,-25);
+  yAngle = map(channel[11],0,1024,20,-20);
+  xAngle = map(channel[10],0,1024,-20,20);
 }
 
 //builder of data, compiles and interprets
