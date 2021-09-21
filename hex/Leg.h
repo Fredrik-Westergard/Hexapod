@@ -24,6 +24,8 @@ class Leg{
     double zOf[6] = {0,0,0,0,0,0}; //individual z offset
     double xOf[6] = {0,0,0,0,0,0}; //individual x offset
     double yOf[6] = {0,0,0,0,0,0}; //individual y offset
+
+    double zAo[6] = {0,0,0,0,0,0};
     
     double lawOfCosinesSSS(double a, double b, double c); //calculate law of cosines when you have all sides 
     double lawOfCosinesSAS(double a, double b, double angle); //calculate law of cosines when you have two sides and one angle between them
@@ -42,6 +44,7 @@ public:
     void setZOf(double a, double b, double c, double d, double e, double f);
     void setYOf(double a, double b, double c, double d, double e, double f);
     void setXOf(double a, double b, double c, double d, double e, double f);
+    void setZAo(double a, double b, double c, double d, double e, double f);
 };
 
 #endif

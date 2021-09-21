@@ -63,8 +63,8 @@ void Leg::calculateAngles(double zOffset, double yOffset, double xOffset, double
     double yOfr = sqrt(pow(temp2,2)-pow(zOfr2,2))*yNr*-1;
 
     //calculate z rotation
-    double xOfr2 = ((((bodyZ*(sin(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAX[i])*zNr))*xN;
-    double yOfr2 = ((((bodyZ*(cos(radianConverter((ANG[i]+(zAngle*zNr))))))-ZAY[i])*zNr))*-1;    
+    double xOfr2 = ((((bodyZ*(sin(radianConverter((ANG[i]+((zAngle+zAo[i])*zNr))))))-ZAX[i])*zNr))*xN;
+    double yOfr2 = ((((bodyZ*(cos(radianConverter((ANG[i]+((zAngle+zAo[i])*zNr))))))-ZAY[i])*zNr))*-1;    
 
     //combine all x and y offsets and make it positive if it's negative
     int yNt = (yOffset+yOf[i]+yOfr2-(yOfr*yNr2*-1)<=0)?-1:1;    
@@ -151,4 +151,13 @@ void Leg::setXOf(double a, double b, double c, double d, double e, double f){
   this->xOf[3] = d;
   this->xOf[4] = e;
   this->xOf[5] = f;
+}
+
+void Leg::setZAo(double a, double b, double c, double d, double e, double f){
+  this->zAo[0] = a;
+  this->zAo[1] = b;
+  this->zAo[2] = c;
+  this->zAo[3] = d;
+  this->zAo[4] = e;
+  this->zAo[5] = f;
 }
