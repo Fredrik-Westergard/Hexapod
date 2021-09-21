@@ -35,6 +35,8 @@ int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double z
   else if(walkToggle && ((yMove < 5 || yMove > -5) || (xMove < 5 || xMove > -5) || (zMove < 5 || zMove > -5))){
     return stepOut(stp, spd);
   }
+  leg.calculateAngles(120, 0, 0, 0, 0, 0);
+  mv.moveLegs(&leg);
   return stp;
 }
 
