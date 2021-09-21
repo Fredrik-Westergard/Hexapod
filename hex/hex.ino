@@ -75,7 +75,7 @@ void loop() {
       stpOS = walk.onSpot(stpOS,spd);
     }
     else if(!ch.isButtonToggled(3) && !ch.isButtonToggled(2) && ch.isButtonToggled(4)){
-      stp = walk.moveInDirection(stp, spd, ch.getYMove(), ch.getXMove(), ch.getZAngle());
+      stp = walk.moveInDirection(stp, spd, ch.getYMove(), ch.getXMove(), ch.getZMove());
     }
   }
 }

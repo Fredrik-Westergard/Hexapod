@@ -42,7 +42,8 @@ void Ch::interpretData(){
   xAngle = map(channel[10],0,1024,-20,20);
 
   yMove = map(channel[12],0,1024,20,-20);
-  xMove = map(channel[10],0,1024,15,-15);
+  xMove = map(channel[13],0,1024,15,-15);
+  zMove = map(channel[10],0,1024,-15,15);
 }
 
 //builder of data, compiles and interprets
@@ -91,4 +92,8 @@ double Ch::getYMove(){
 
 double Ch::getXMove(){
   return xMove;
+}
+
+double Ch::getZMove(){
+  return zMove;
 }

@@ -19,6 +19,7 @@ class Ch{
     double xAngle = 0; //roll angle
     double yMove = 0;
     double xMove = 0;
+    double zMove = 0;
     
     void compileData(); //data compiler, converts radio string to channels
     void interpretData(); //data interpretor, maps channels to axes
@@ -34,5 +35,6 @@ class Ch{
     double getXAngle(); //getter of x angle
     double getYMove();
     double getXMove();
+    double getZMove();
 };
 #endif
