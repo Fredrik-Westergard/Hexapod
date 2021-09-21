@@ -18,8 +18,7 @@ class Led{
     int getRed();
     int getBlue();
     int getGreen();
-    
-    
+     
 };
 
 #endif

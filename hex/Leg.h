@@ -1,8 +1,6 @@
 #ifndef LEG_H__
 #define LEG_H__
 
-#include "Ch.h"
-
 class Leg{
   private:
     const double SHIN = 120; //shin of robot leg constant
@@ -33,9 +31,8 @@ class Leg{
     double degreesConverter(double radian); //convert from radians to degrees
     double calculateDesiredLength(double zOffset, double dLen); //desired length calculator
     double calculateHeronsFormula(double a, double b); //calculate herons formula, get height of triangle. used on isoscelece triangle so only tow sides are needed
-public:
-    void calculateAngles(Ch ch);  //calculates all angles and sets them
-    void calculateAnglesWalk(double zOffset, double yOffset, double xOffset, double zAngle, double yAngle, double xAngle);
+public: 
+    void calculateAngles(double zOffset, double yOffset, double xOffset, double zAngle, double yAngle, double xAngle); //calculates all angles and sets them
     void setAngleA(double angleA, int pos); //set A angle, shin-tibia
     void setAngleB(double angleB, int pos); //set B angle, tibia-hip
     void setAngleC(double angleC, int pos); //set C angle, hip-body
@@ -43,6 +40,8 @@ public:
     double getAngleB(int pos); //get B angle, tibia-hip
     double getAngleC(int pos); //get C angle, hip-body
     void setZOf(double a, double b, double c, double d, double e, double f);
+    void setYOf(double a, double b, double c, double d, double e, double f);
+    void setXOf(double a, double b, double c, double d, double e, double f);
 };
 
 #endif

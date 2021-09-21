@@ -17,18 +17,22 @@ class Ch{
     double zAngle = 0; //yaw angle
     double yAngle = 0; //pitch angle
     double xAngle = 0; //roll angle
+    double yMove = 0;
+    double xMove = 0;
     
     void compileData(); //data compiler, converts radio string to channels
     void interpretData(); //data interpretor, maps channels to axes
 
   public:
     void buildData(char* str); //data builder, compiles and interprets
-    bool isButtonToggeled(int num); //true if Toggeled
+    bool isButtonToggled(int num); //true if Toggeled
     double getZOffset(); //getter of height
     double getYOffset(); //getter of y offset
     double getXOffset(); //getter of x offset
     double getZAngle(); //getter of z angle
     double getYAngle(); //getter of y angle
     double getXAngle(); //getter of x angle
+    double getYMove();
+    double getXMove();
 };
 #endif

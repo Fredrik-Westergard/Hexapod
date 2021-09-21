@@ -9,9 +9,13 @@ void Led::setColors(int r, int g, int b){
 }
 
 void Led::toggleColors(Ch* ch){
-  (ch->isButtonToggeled(0))?setRed(255):setRed(0);
-  (ch->isButtonToggeled(2))?setGreen(255):setGreen(0);
-  (ch->isButtonToggeled(3))?setBlue(255):setBlue(0);
+  int r = (ch->isButtonToggled(0))?255:0;
+  int g = (ch->isButtonToggled(3))?255:0;
+  int b = (ch->isButtonToggled(2))?100:0;
+  b = (ch->isButtonToggled(4))?255:b;
+  setRed(r);
+  setGreen(g);
+  setBlue(b);
 }
 
 void Led::setRed(int red){

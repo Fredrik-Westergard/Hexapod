@@ -21,8 +21,9 @@ Move mv; //move object
 Walk walk;
 Led led;
 
+int stpOS = 0;
 int stp = 0;
-int spd = 500;
+int spd = 300;
 
 //standard setup function for arduino, runs only once
 void setup() {
@@ -63,15 +64,18 @@ void loop() {
   led.setColors(rPin, gPin, bPin);
   
   //if robot is armed (button 0 is toggeled)
-  if(ch.isButtonToggeled(0)){
-    if(ch.isButtonToggeled(3) && !ch.isButtonToggeled(2)){
+  if(ch.isButtonToggled(0)){
+    if(ch.isButtonToggled(3) && !ch.isButtonToggled(2) && !ch.isButtonToggled(4)){
       //calculates the angles
-      leg.calculateAngles(ch);
+      leg.calculateAngles(ch.getZOffset(), ch.getYOffset(), ch.getXOffset(), ch.getZAngle(), ch.getYAngle(), ch.getXAngle());
       //move robot
       mv.moveLegs(&leg);
     }
-    else if(!ch.isButtonToggeled(3) && ch.isButtonToggeled(2)){
-      stp = walk.onSpot(stp,spd);
+    else if(!ch.isButtonToggled(3) && ch.isButtonToggled(2) && !ch.isButtonToggled(4)){
+      stpOS = walk.onSpot(stpOS,spd);
+    }
+    else if(!ch.isButtonToggled(3) && !ch.isButtonToggled(2) && ch.isButtonToggled(4)){
+      stp = walk.moveInDirection(stp, spd, ch.getYMove(), ch.getXMove(), ch.getZAngle());
     }
   }
 }

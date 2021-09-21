@@ -40,6 +40,9 @@ void Ch::interpretData(){
   zAngle = map(channel[13],0,1024,25,-25);
   yAngle = map(channel[11],0,1024,20,-20);
   xAngle = map(channel[10],0,1024,-20,20);
+
+  yMove = map(channel[12],0,1024,20,-20);
+  xMove = map(channel[10],0,1024,15,-15);
 }
 
 //builder of data, compiles and interprets
@@ -50,7 +53,7 @@ void Ch::buildData(char* str){
 }
 
 //true if armed
-bool Ch::isButtonToggeled(int num){
+bool Ch::isButtonToggled(int num){
   return buttons[num];
 }
 //getter of height
@@ -80,4 +83,12 @@ double Ch::getYAngle(){
 //getter of x angle, roll
 double Ch::getXAngle(){
   return xAngle;
+}
+
+double Ch::getYMove(){
+  return yMove;
+}
+
+double Ch::getXMove(){
+  return xMove;
 }
