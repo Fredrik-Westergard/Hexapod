@@ -69,8 +69,10 @@ void Leg::calculateAngles(double zOffset, double yOffset, double xOffset, double
     //combine all x and y offsets and make it positive if it's negative
     int yNt = (yOffset+yOf[i]+yOfr2-(yOfr*yNr2*-1)<=0)?-1:1;    
     int xNt = (xOffset+xOf[i]+xOfr2-(xOfr*xN*-1)<=0)?-1:1;
+    int zNt = ((zOffset-zOf[i])-(zOfr-zOfr2)<=0)?-1:1;
     double yOt = (yOffset+yOf[i]+yOfr2-(yOfr*yNr2*-1))*yNt;
     double xOt = (xOffset+xOf[i]+xOfr2-(xOfr*xN*-1))*xNt;
+    double zOt = ((zOffset-zOf[i])-(zOfr-zOfr2))*zNt;
 
     //calculate y translation
     double yLen;
@@ -90,13 +92,20 @@ void Leg::calculateAngles(double zOffset, double yOffset, double xOffset, double
     double xA = yA-(degreesConverter(lawOfCosinesSSS(xLen,yLen,xOt))*xNt*xNt2);
 
     //calculate desired length of leg
-    double dLen = calculateDesiredLength((zOffset-zOf[i])-(zOfr-zOfr2), xLen);
+    double dLen = calculateDesiredLength(zOt, xLen);
 
     //calculate and set angles for motors
     setAngleA(degreesConverter(lawOfCosinesSSS(TIBIA,SHIN,dLen)),i); //calculate and set angle A, shin-tibia joint
-    setAngleB(
+    if(zNt == 1){
+      setAngleB(
       360-(90+(degreesConverter(asin(xLen/dLen))
       +degreesConverter(lawOfCosinesSSS(dLen,TIBIA,SHIN)))),i); //calculate and set angle B, tibia-hip joint
+    }
+    else{
+      setAngleB(
+        360-(180+(degreesConverter(acos(xLen/dLen))
+        +degreesConverter(lawOfCosinesSSS(dLen,TIBIA,SHIN)))),i);
+    }
     setAngleC(xA,i); //set angle C, hip-body joint
   }
 }

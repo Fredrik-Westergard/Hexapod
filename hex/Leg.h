@@ -11,7 +11,7 @@ class Leg{
     const double BODYY = 107; //body y length divided by two
     const double BODYXY = 121.709; //body xy length, hypotenuse between BODYX1 and BODYY 
     const double BODYA = 61.541; //body angle from tan(BODYY/BODYX1)
-    const double LEGLEN = 110; //leg length constant, the length the tip of the legs are from the hip joint, in mm
+    const double LEGLEN = 100; //leg length constant, the length the tip of the legs are from the hip joint, in mm
 
     const double ANG[6] = {45.0, 90.0, 135.0, 225.0, 270.0, 315.0}; //constant angles array for z rotation
     const double ZAY[6] = {131.408,0,-131.408,-131.408,0,131.408}; //constant y axis offset array for z rotation

@@ -9,13 +9,53 @@ void Led::setColors(int r, int g, int b){
 }
 
 void Led::toggleColors(Ch* ch){
-  int r = (ch->isButtonToggled(0))?255:0;
-  int g = (ch->isButtonToggled(3))?255:0;
-  int b = (ch->isButtonToggled(2))?100:0;
-  b = (ch->isButtonToggled(4))?255:b;
-  setRed(r);
-  setGreen(g);
-  setBlue(b);
+  bool rec = ch->getMilRec()+200 > (int)millis();
+  bool arm = ch->isButtonToggled(0);
+  bool kin = ch->isButtonToggled(3);
+  bool spt = ch->isButtonToggled(2);
+  bool mov = ch->isButtonToggled(4);
+  bool ser = false;
+
+  if(!rec){
+    setRed(0);
+    setGreen(0);
+    setBlue(0);
+    if(ser){
+      setRed(0);
+      setGreen(255);
+      setBlue(255);
+    }
+  }
+  else{
+    setRed(255);
+    setGreen(255);
+    setBlue(0);
+    if(arm){
+      setRed(255);
+      setGreen(0);
+      setBlue(0);
+      if(kin && !spt && !mov){
+        setRed(0);
+        setGreen(255);
+        setBlue(0);
+      }
+      else if(spt && !kin && !mov){
+        setRed(255);
+        setGreen(0);
+        setBlue(255);
+      }
+      else if(mov && !spt && !kin){
+        setRed(0);
+        setGreen(0);
+        setBlue(255);
+      }
+      else if(mov || spt || kin){
+        setRed(255);
+        setGreen(255);
+        setBlue(255);
+      }
+    }
+  }
 }
 
 void Led::setRed(int red){

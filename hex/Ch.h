@@ -7,6 +7,7 @@ class Ch{
 
   private:
     int milB[10] = {0,0,0,0,0,0,0,0,0,0}; //milliseconds for button presses
+    int milRec = 0;
     int channel[16]; //channels of the controller
     char* str; //string received from radio
     bool buttons[10] = {false,false,false,false,false,
@@ -36,5 +37,6 @@ class Ch{
     double getYMove();
     double getXMove();
     double getZMove();
+    int getMilRec();
 };
 #endif

@@ -34,7 +34,7 @@ void Ch::interpretData(){
     }
   }
   
-  zOffset = map(channel[12],0,1024,120,40);
+  zOffset = map(channel[12],0,1024,140,40);
   yOffset = map(channel[15],0,1024,40,-40);
   xOffset = map(channel[14],0,1024,40,-40);
   zAngle = map(channel[13],0,1024,25,-25);
@@ -44,6 +44,7 @@ void Ch::interpretData(){
   yMove = map(channel[12],0,1024,20,-20);
   xMove = map(channel[13],0,1024,15,-15);
   zMove = map(channel[10],0,1024,-15,15);
+  milRec = millis();
 }
 
 //builder of data, compiles and interprets
@@ -96,4 +97,8 @@ double Ch::getXMove(){
 
 double Ch::getZMove(){
   return zMove;
+}
+
+int Ch::getMilRec(){
+  return milRec;
 }
