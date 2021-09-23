@@ -4,7 +4,7 @@
 class Leg{
   private:
     const double SHIN = 120; //shin of robot leg constant
-    const double TIBIA = 65; //tibia of robot leg constant
+    const double THIGH = 65; //tibia of robot leg constant
     const double HIP = 50; //hip of robot leg constant
     const double BODYX1 = 58; //body x length divided by two, for front and back legs
     const double BODYX2 = 90; //body x lenght divided by two, for middle legs
@@ -14,8 +14,8 @@ class Leg{
     const double LEGLEN = 100; //leg length constant, the length the tip of the legs are from the hip joint, in mm
 
     const double ANG[6] = {45.0, 90.0, 135.0, 225.0, 270.0, 315.0}; //constant angles array for z rotation
-    const double ZAY[6] = {131.408,0,-131.408,-131.408,0,131.408}; //constant y axis offset array for z rotation
-    const double ZAX[6] = {131.408,200,131.408,-131.408,-200,-131.408}; //constant x axis offset array for z rotation
+    const double ZAY[6] = {125.983,0,-125.983,-125.983,0,125.983}; //constant y axis offset array for z rotation
+    const double ZAX[6] = {125.983,190,125.983,-125.983,-190,-125.983}; //constant x axis offset array for z rotation
     
     double angleA[6]; //angle of shin motor
     double angleB[6]; //angle of tibia motor

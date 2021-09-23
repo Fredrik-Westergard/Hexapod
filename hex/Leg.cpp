@@ -95,16 +95,16 @@ void Leg::calculateAngles(double zOffset, double yOffset, double xOffset, double
     double dLen = calculateDesiredLength(zOt, xLen);
 
     //calculate and set angles for motors
-    setAngleA(degreesConverter(lawOfCosinesSSS(TIBIA,SHIN,dLen)),i); //calculate and set angle A, shin-tibia joint
+    setAngleA(degreesConverter(lawOfCosinesSSS(THIGH,SHIN,dLen)),i); //calculate and set angle A, shin-THIGH joint
     if(zNt == 1){
       setAngleB(
       360-(90+(degreesConverter(asin(xLen/dLen))
-      +degreesConverter(lawOfCosinesSSS(dLen,TIBIA,SHIN)))),i); //calculate and set angle B, tibia-hip joint
+      +degreesConverter(lawOfCosinesSSS(dLen,THIGH,SHIN)))),i); //calculate and set angle B, THIGH-hip joint
     }
     else{
       setAngleB(
         360-(180+(degreesConverter(acos(xLen/dLen))
-        +degreesConverter(lawOfCosinesSSS(dLen,TIBIA,SHIN)))),i);
+        +degreesConverter(lawOfCosinesSSS(dLen,THIGH,SHIN)))),i);
     }
     setAngleC(xA,i); //set angle C, hip-body joint
   }

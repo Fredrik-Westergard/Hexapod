@@ -42,9 +42,15 @@ void Ch::interpretData(){
   xAngle = map(channel[10],0,1024,-20,20);
 
   yMove = map(channel[12],0,1024,20,-20);
-  xMove = map(channel[13],0,1024,15,-15);
+  xMove = map(channel[13],0,1024,20,-20);
   zMove = map(channel[10],0,1024,-15,15);
   milRec = millis();
+
+  Serial.print(yMove);
+  Serial.print(" ");
+  Serial.print(xMove);
+  Serial.print(" ");
+  Serial.println(zMove);
 }
 
 //builder of data, compiles and interprets

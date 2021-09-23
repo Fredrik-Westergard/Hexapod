@@ -9,7 +9,7 @@ void Led::setColors(int r, int g, int b){
 }
 
 void Led::toggleColors(Ch* ch){
-  bool rec = ch->getMilRec()+200 > (int)millis();
+  bool rec = ch->getMilRec()+200 > (int) millis();
   bool arm = ch->isButtonToggled(0);
   bool kin = ch->isButtonToggled(3);
   bool spt = ch->isButtonToggled(2);
