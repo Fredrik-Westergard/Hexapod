@@ -15,12 +15,15 @@ class Walk{
     double yLast;
     double zLast;
     int rnd = 0;
+    int steps = 0;
   public:
     int onSpot(int stp, int spd);
     int moveInDirection(int stp, int spd, double yMove, double xMove, double zMove);
     int stepIn(int stp, int spd, double yMove, double xMove, double zMove);
     int walk(int stp, int spd, double yMove, double xMove, double zMove);
     int stepOut(int stp, int spd);
+    int getSteps();
+    void setSteps(int steps);
 };
 
 #endif

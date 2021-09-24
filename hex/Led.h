@@ -8,6 +8,7 @@ class Led{
     int red = 0;
     int green = 0;
     int blue = 0;
+    bool serial = false;
 
   public:
     void setColors(int r, int g, int b);
@@ -18,6 +19,7 @@ class Led{
     int getRed();
     int getBlue();
     int getGreen();
+    void setSer(bool serial);
      
 };
 

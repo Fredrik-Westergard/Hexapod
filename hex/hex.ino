@@ -6,6 +6,7 @@
 #include "Move.h"
 #include "Walk.h"
 #include "Led.h"
+#include "SerCom.h"
 
 RF24 radio(9,8); //CE, CSN
 const byte address[6] = "00001"; //Radio address
@@ -20,6 +21,7 @@ Leg leg; //leg object
 Move mv; //move object
 Walk walk;
 Led led;
+SerCom ser;
 
 int stpOS = 0;
 int stp = 0;
@@ -60,6 +62,10 @@ void loop() {
     ch.buildData(str);
   }
 
+  ser.checkSerial();
+
+  led.setSer(ser.isArmed());
+
   led.toggleColors(&ch);
   led.setColors(rPin, gPin, bPin);
   
@@ -77,5 +83,8 @@ void loop() {
     else if(!ch.isButtonToggled(3) && !ch.isButtonToggled(2) && ch.isButtonToggled(4)){
       stp = walk.moveInDirection(stp, spd, ch.getYMove(), ch.getXMove(), ch.getZMove());
     }
+  }
+  else if(ser.isArmed()){
+    stp = ser.serialMove(&walk, stp, spd);
   }
 }

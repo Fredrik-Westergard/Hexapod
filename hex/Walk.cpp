@@ -25,7 +25,7 @@ int Walk::onSpot(int stp, int spd){
   return stp;
 }
 
-int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double zMove){
+int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double zMove){  
   if(!walkToggle && ((yMove > 5 || yMove < -5) || (xMove > 5 || xMove < -5) || (zMove > 5 || zMove < -5))){
     return stepIn(stp, spd, yMove, xMove, zMove);
   }
@@ -42,7 +42,8 @@ int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double z
 
 int Walk::stepIn(int stp, int spd, double yMove, double xMove, double zMove){
   rnd = 0;
-  if(stp == 0 && (int) millis() > stpMillis + spd){    
+  steps = 0;
+  if(stp == 0 && (int) millis() > stpMillis + spd){   
     //leg.setZOf(100,0,100,20,80,20); //lift legs, three #1
     leg.setZOf(120,-20,120,0,100,0); //lift legs, three #1
     leg.setYOf(yMove,0,yMove,0,yMove,0); //move three #1 y-axis
@@ -55,6 +56,7 @@ int Walk::stepIn(int stp, int spd, double yMove, double xMove, double zMove){
     stp++;
   }
   else if(stp == 1 && (int) millis() > stpMillis + spd){
+    steps++;
     leg.setZOf(0,0,0,0,0,0); //put leg down
     leg.setYOf(0,-yLast,0,-yLast,0,-yLast); //move forward leg to 0 and ground leg to negative of what forward leg was, on three #1
     leg.setXOf(0,-xLast,0,-xLast,0,-xLast); //move side leg to 0 and ground leg to negative of what side leg was, on three #1
@@ -83,6 +85,7 @@ int Walk::walk(int stp, int spd, double yMove, double xMove, double zMove){
     stp++;
   }
   else if(stp == 1 && (int) millis() > stpMillis + spd){
+    steps++;
     leg.setZOf(0,0,0,0,0,0);
     leg.setYOf(yLast,-yLast,yLast,-yLast,yLast,-yLast);
     leg.setXOf(xLast,-xLast,xLast,-xLast,xLast,-xLast);
@@ -102,6 +105,7 @@ int Walk::walk(int stp, int spd, double yMove, double xMove, double zMove){
     stp++;
   }
   else if(stp == 3 && (int) millis() > stpMillis + spd){
+    steps++;
     leg.setZOf(0,0,0,0,0,0);
     leg.setYOf(-yLast,yLast,-yLast,yLast,-yLast,yLast);
     leg.setXOf(-xLast,xLast,-xLast,xLast,-xLast,xLast);
@@ -129,6 +133,7 @@ int Walk::stepOut(int stp,int spd){
     rnd++;
   }
   else if(stp == 1 && (int) millis() > stpMillis + spd){
+    steps++;
     leg.setZOf(0,0,0,0,0,0);
     leg.setYOf(yLast,-yLast,yLast,-yLast,yLast,-yLast);
     leg.setXOf(xLast,-xLast,xLast,-xLast,xLast,-xLast);
@@ -156,6 +161,7 @@ int Walk::stepOut(int stp,int spd){
     rnd++;
   }
   else if(stp == 3 && (int) millis() > stpMillis + spd){
+    steps++;
     leg.setZOf(0,0,0,0,0,0);
     leg.setYOf(-yLast,yLast,-yLast,yLast,-yLast,yLast);
     leg.setXOf(-xLast,xLast,-xLast,xLast,-xLast,xLast);
@@ -171,4 +177,12 @@ int Walk::stepOut(int stp,int spd){
   mv.moveLegs(&leg);
   
   return stp;
+}
+
+int Walk::getSteps(){
+  return steps;
+}
+
+void Walk::setSteps(int steps){
+  this->steps = steps;
 }

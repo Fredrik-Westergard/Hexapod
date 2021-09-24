@@ -14,7 +14,7 @@ void Led::toggleColors(Ch* ch){
   bool kin = ch->isButtonToggled(3);
   bool spt = ch->isButtonToggled(2);
   bool mov = ch->isButtonToggled(4);
-  bool ser = false;
+  bool ser = serial;
 
   if(!rec){
     setRed(0);
@@ -80,4 +80,8 @@ int Led::getBlue(){
 
 int Led::getGreen(){
   return green;
+}
+
+void Led::setSer(bool serial){
+  this->serial = serial;
 }
