@@ -4,11 +4,13 @@
 #include <Arduino.h>
 #include "Leg.h"
 #include "Move.h"
+#include "Ultra.h"
 
 class Walk{
   private:
     Leg leg;
     Move mv;
+    Ultra ultra;
     int stpMillis = 0;
     bool walkToggle = false;
     double xLast;

@@ -2,7 +2,6 @@
 #include <Arduino.h>
 #include <math.h>
 
-
 void SerCom::checkSerial(){
   
   char serial[32];
@@ -49,7 +48,7 @@ void SerCom::checkSerial(){
           break;
         }
       }
-      if(j != 3){
+      if(j != 2){
         return;
       }
             
@@ -95,7 +94,6 @@ int SerCom::serialMove(Walk* walk, int stp, int spd){
     stepAmount = 0;
     walk->setSteps(0);
   }
-  
   return walk->moveInDirection(stp, spd, stepLength[1], stepLength[0], stepLength[2]);
 }
 

@@ -25,7 +25,10 @@ int Walk::onSpot(int stp, int spd){
   return stp;
 }
 
-int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double zMove){  
+int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double zMove){
+  if(ultra.getDistance() < 25 && yMove > 0){
+    yMove = 0;
+  }
   if(!walkToggle && ((yMove > 5 || yMove < -5) || (xMove > 5 || xMove < -5) || (zMove > 5 || zMove < -5))){
     return stepIn(stp, spd, yMove, xMove, zMove);
   }

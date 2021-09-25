@@ -4,11 +4,10 @@
 #include "Walk.h"
 
 class SerCom{
-  private:
+  private:    
     bool armed = false;
     double stepLength[3] = {0,0,0};
     int stepAmount = 0;
-    
     void applySerialInput(double x, double y, double z);
     
   public:
