@@ -48,6 +48,9 @@ void setup() {
 
   //start serial
   Serial.begin(115200);
+  Serial5.begin(115200);
+  Serial.setTimeout(20);
+  Serial5.setTimeout(20);
 }
 
 //standard main loop
