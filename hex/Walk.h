@@ -26,6 +26,7 @@ class Walk{
     int stepOut(int stp, int spd);
     int getSteps();
     void setSteps(int steps);
+    int getDistance();
 };
 
 #endif

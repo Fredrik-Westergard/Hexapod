@@ -88,6 +88,11 @@ void loop() {
     }
   }
   else if(ser.isArmed()){
-    stp = ser.serialMove(&walk, stp, spd);
+    if(!ser.isAutonomous()){
+      stp = ser.serialMove(&walk, stp, spd);
+    }
+    else{
+      stp = ser.autonomousMovement(&walk, stp, spd);
+    }
   }
 }

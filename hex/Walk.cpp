@@ -47,7 +47,6 @@ int Walk::stepIn(int stp, int spd, double yMove, double xMove, double zMove){
   rnd = 0;
   steps = 0;
   if(stp == 0 && (int) millis() > stpMillis + spd){   
-    //leg.setZOf(100,0,100,20,80,20); //lift legs, three #1
     leg.setZOf(120,-20,120,0,100,0); //lift legs, three #1
     leg.setYOf(yMove,0,yMove,0,yMove,0); //move three #1 y-axis
     leg.setXOf(xMove,0,xMove,0,xMove,0); //move three #1 x-axis
@@ -188,4 +187,8 @@ int Walk::getSteps(){
 
 void Walk::setSteps(int steps){
   this->steps = steps;
+}
+
+int Walk::getDistance(){
+  return ultra.getDistance();
 }

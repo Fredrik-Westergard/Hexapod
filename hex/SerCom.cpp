@@ -2,6 +2,10 @@
 #include <Arduino.h>
 #include <math.h>
 
+SerCom::SerCom(){
+  randomSeed(analogRead(6));
+}
+
 
 void SerCom::checkSerial(){
   String serial;
@@ -28,6 +32,10 @@ void SerCom::checkSerial(){
   else if(serial.substring(0,3) == "mem"){
     switchMemory();
     return;
+  }
+  else if(serial.substring(0,3) == "aut"){
+    Serial.println("autonomous movement");
+    autonomous = !autonomous;
   }
   
   if(armed && serial.length() > 5){
@@ -75,32 +83,32 @@ void SerCom::checkSerial(){
 }
 
 void SerCom::applySerialInput(double x, double y, double z){
-   double saX = abs(round(x/20))*2;
-   double saY = abs(round(y/15))*2;
+   double saX = abs(round((x/20)))*2;
+   double saY = abs(round(y/30))*2;
    double saZ = abs(round(z/10));
   
    int num = max(max(saX,saY),saZ);
    
    if(num != 0){
-    double len1 = x/num;
-    double len2 = y/num;
-    double len3 = ((z/num)*1.275)+1; //(z+(1.4*(num*2)))/(num*2);
+    double len1 = (x/num)-4;
+    double len2 = (y/num)*1.3;
+    double len3 = ((z/num)*1.285)+0.9;
     
     Serial.print("Y: ");
     Serial.print(len1);
     Serial.print(" X: ");
-    Serial.print(len2*2);
+    Serial.print(len2);
     Serial.print(" Z: ");
     Serial.print(len3);
     Serial.print(" S: ");
-    Serial.println(num);
+    Serial.println(num/2);
 
     if(memory){
       list->addToList(len1, len2, len3, num/2);
     }
     else{
       stepLength[0] = len1;
-      stepLength[1] = len2*2;
+      stepLength[1] = len2;
       stepLength[2] = len3;
       stepAmount = num/2;
     }
@@ -148,11 +156,56 @@ int SerCom::serialMove(Walk* walk, int stp, int spd){
       walk->setSteps(0);
     }
   }
+  int dist = getDistance(walk);
+  Serial.println(dist);
+  if(dist < 25){
+     stepLength[1] = 0;
+     if(stepLength[0] <= 5 || stepLength[2] <= 5){
+        stepLength[0] = 0;
+        stepLength[2] = 0;
+        stepAmount = 0;
+        walk->setSteps(0);
+     }
+  }
+  
   return walk->moveInDirection(stp, spd, stepLength[1], stepLength[0], stepLength[2]);
 }
 
+int SerCom::autonomousMovement(Walk* walk, int stp, int spd){
+  if((getDistance(walk) < 25 && stepLength[1] > 0)||((walk->getSteps() > stepAmount-2)&&(stepLength[1] > 5))){
+    stepLength[0] = 0;
+    stepLength[1] = 0;
+    stepLength[2] = 0;
+    stepAmount = 0;
+    walk->setSteps(0);
+    applySerialInput(0,0,((random(-1,1) > 0)?random(-45,-181):random(45,181)));
+  }
+  if((walk->getSteps() > stepAmount-2)&&(stepLength[1] < 5)){
+    stepLength[0] = 0;
+    stepLength[1] = 0;
+    stepLength[2] = 0;
+    stepAmount = 0;
+    walk->setSteps(0);
+    applySerialInput(0,1000,0);
+  }
+  return walk->moveInDirection(stp, spd, stepLength[1], stepLength[0], stepLength[2]);
+}
 
+int SerCom::getDistance(Walk* walk){
+  int tot = 0;
+  for(int i = 0; i < 9; i++){
+    distance[i] = distance[i+1];
+    tot+= distance[i];
+  }
+  distance[9] = walk->getDistance();
+  tot+=distance[9];
+  return tot/10;
+}
 
 bool SerCom::isArmed(){
   return armed;
+}
+
+bool SerCom::isAutonomous(){
+  return autonomous;
 }
