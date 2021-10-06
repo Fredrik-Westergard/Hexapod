@@ -2,6 +2,10 @@
 #include <math.h>
 #include <Arduino.h>
 
+/*
+ * class to calculate leg lengths and angles
+ */
+
 //function to calculate law of cosines for side side side triangle
 double Leg::lawOfCosinesSSS(double a, double b, double c){
   return acos((pow(a,2)+pow(b,2)-pow(c,2))/(2*a*b));
@@ -135,6 +139,7 @@ double Leg::getAngleC(int pos){
   return this->angleC[pos];
 }
 
+//offset setters
 void Leg::setZOf(double a, double b, double c, double d, double e, double f){
   this->zOf[0] = a;
   this->zOf[1] = b;

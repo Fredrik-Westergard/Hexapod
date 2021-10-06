@@ -1,6 +1,10 @@
 #include "Ch.h"
 
 
+/*
+ * channel class to get controller data
+ */
+
 /* function to compile data from controller
  * As Radio transciever can only send 32 byte of data at a time
  * the transmission is split into A and B transmissions and compiled to
@@ -53,6 +57,16 @@ void Ch::interpretData(){
   Serial.println(zMove);
 }
 
+void Ch::resetData(){
+  for(int i = 0; i < 10; i++){
+    channel[i] = 0;
+  }
+  for(int i = 10; i < 16; i++){
+    channel[i] = 512;
+  }
+  interpretData(); 
+}
+
 //builder of data, compiles and interprets
 void Ch::buildData(char* str){
   this->str = str;
@@ -93,18 +107,22 @@ double Ch::getXAngle(){
   return xAngle;
 }
 
+//getter of yMove, for walking
 double Ch::getYMove(){
   return yMove;
 }
 
+//getter of xMove, for walking
 double Ch::getXMove(){
   return xMove;
 }
 
+//getter of zMove, for walking
 double Ch::getZMove(){
   return zMove;
 }
 
+//getter of Milliseconds since robot last received something from the controller
 int Ch::getMilRec(){
   return milRec;
 }

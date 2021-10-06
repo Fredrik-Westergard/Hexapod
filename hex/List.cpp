@@ -1,16 +1,22 @@
 #include "List.h"
 #include <stdlib.h>
 
+/*
+ * linked list class
+ */
 
+//constructor
 List::List(){
     this->head = NULL;
     this->length = -1;
 }
 
+//getter of length
 int List::getLength(){
     return this->length;
 }
 
+//function to add item to list
 void List::addToList(double len1, double len2, double len3, int amount){
     Node* n = new Node(amount, len1, len2, len3);
     n->next = NULL;
@@ -25,6 +31,7 @@ void List::addToList(double len1, double len2, double len3, int amount){
     this->length++;
 }
 
+//getter of element recursively
 Node* List::getElementRecursive(int index, int current, Node* n){
     if(index == current){
         return n;
@@ -34,6 +41,7 @@ Node* List::getElementRecursive(int index, int current, Node* n){
     }
 }
 
+//getter of element
 Node* List::getElement(int i){
     if(i > this->length || i < 0){
         return NULL;
@@ -41,6 +49,7 @@ Node* List::getElement(int i){
     return getElementRecursive(i, 0, this->head);
 }
 
+//function to remove item from list
 void List::removeFromList(){
     if(this->head == NULL){
         return;
@@ -51,6 +60,7 @@ void List::removeFromList(){
     this->length--;
 }  
 
+//destructor
 List::~List(){
     int l = this->length;
     for(int i = 0; i < l; i++){

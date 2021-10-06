@@ -5,7 +5,9 @@
 #include "Leg.h"
 #include <PCA9685.h>  //pca9685 the servo driver module
 
-//Move class
+/*
+ * class to move to specified angles
+ */
 class Move{
   private:
     double servoOffset[2][3][3]; //servo offsets, the degrees to offset the servos to match real world angles to calculated ones

@@ -2,12 +2,18 @@
 #include "Ch.h"
 #include <Arduino.h>
 
+/*
+ * class for led control
+ */
+
+//turns the led on with the right color
 void Led::setColors(int r, int g, int b){
   analogWrite(r, red);
   analogWrite(g, green);
   analogWrite(b, blue);
 }
 
+//sets the right color
 void Led::toggleColors(Ch* ch){
   bool rec = ch->getMilRec()+200 > (int) millis();
   bool arm = ch->isButtonToggled(0);
@@ -58,30 +64,37 @@ void Led::toggleColors(Ch* ch){
   }
 }
 
+//sets red
 void Led::setRed(int red){
   this->red = red;
 }
 
+//sets blue
 void Led::setBlue(int blue){
   this->blue = blue;
 }
 
+//sets green
 void Led::setGreen(int green){
   this->green = green;
 }
 
+//gets red
 int Led::getRed(){
   return red;
 }
 
+//gets blue
 int Led::getBlue(){
   return blue;
 }
 
+// gets green
 int Led::getGreen(){
   return green;
 }
 
+//set serial flag
 void Led::setSer(bool serial){
   this->serial = serial;
 }

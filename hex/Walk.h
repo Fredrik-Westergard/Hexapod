@@ -6,27 +6,30 @@
 #include "Move.h"
 #include "Ultra.h"
 
+/*
+ * class for walking
+ */
 class Walk{
   private:
-    Leg leg;
-    Move mv;
-    Ultra ultra;
-    int stpMillis = 0;
-    bool walkToggle = false;
-    double xLast;
-    double yLast;
-    double zLast;
-    int rnd = 0;
-    int steps = 0;
+    Leg leg; //leg object
+    Move mv; //move object
+    Ultra ultra; //ultrasonic sensor object
+    int stpMillis = 0; //milliseconds since last step
+    bool walkToggle = false; //toggle for world
+    double xLast; //last x value
+    double yLast; //last y value
+    double zLast; //last z value
+    int rnd = 0; //round variable, used to properly step out
+    int steps = 0; //steps counter
   public:
-    int onSpot(int stp, int spd);
-    int moveInDirection(int stp, int spd, double yMove, double xMove, double zMove);
-    int stepIn(int stp, int spd, double yMove, double xMove, double zMove);
-    int walk(int stp, int spd, double yMove, double xMove, double zMove);
-    int stepOut(int stp, int spd);
-    int getSteps();
-    void setSteps(int steps);
-    int getDistance();
+    int onSpot(int stp, int spd); //function to walk on spot
+    int moveInDirection(int stp, int spd, double yMove, double xMove, double zMove); //function to move in chosen direction
+    int stepIn(int stp, int spd, double yMove, double xMove, double zMove); //function to take first step
+    int walk(int stp, int spd, double yMove, double xMove, double zMove); //function to walk
+    int stepOut(int stp, int spd); //function to take last step
+    int getSteps(); //getter of steps taken
+    void setSteps(int steps); //setter of steps
+    int getDistance(); //getter of distance from ultrasonic sensor
 };
 
 #endif

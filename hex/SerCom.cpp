@@ -2,11 +2,16 @@
 #include <Arduino.h>
 #include <math.h>
 
+/*
+ * class for serial communication
+ */
+
+//constructor
 SerCom::SerCom(){
   randomSeed(analogRead(6));
 }
 
-
+//function to check if there is serial to read and interprets it
 void SerCom::checkSerial(){
   String serial;
   if(Serial.available() > 0){
@@ -82,6 +87,7 @@ void SerCom::checkSerial(){
   }
 }
 
+//function to apply the serial input
 void SerCom::applySerialInput(double x, double y, double z){
    double saX = abs(round((x/20)))*2;
    double saY = abs(round(y/30))*2;
@@ -115,6 +121,7 @@ void SerCom::applySerialInput(double x, double y, double z){
    }   
 }
 
+//function to switch memory on/off
 void SerCom::switchMemory(){
   Serial.println("memory");
   memory = !memory;
@@ -127,6 +134,7 @@ void SerCom::switchMemory(){
   }
 }
 
+//function to use serial to move
 int SerCom::serialMove(Walk* walk, int stp, int spd){
   if(walk->getSteps() > stepAmount-2){
     if(memory){
@@ -171,6 +179,7 @@ int SerCom::serialMove(Walk* walk, int stp, int spd){
   return walk->moveInDirection(stp, spd, stepLength[1], stepLength[0], stepLength[2]);
 }
 
+//function to move autonomously
 int SerCom::autonomousMovement(Walk* walk, int stp, int spd){
   if((getDistance(walk) < 25 && stepLength[1] > 0)||((walk->getSteps() > stepAmount-2)&&(stepLength[1] > 5))){
     stepLength[0] = 0;
@@ -191,6 +200,7 @@ int SerCom::autonomousMovement(Walk* walk, int stp, int spd){
   return walk->moveInDirection(stp, spd, stepLength[1], stepLength[0], stepLength[2]);
 }
 
+//function to get a filtered distance
 int SerCom::getDistance(Walk* walk){
   int tot = 0;
   for(int i = 0; i < 9; i++){
@@ -201,11 +211,13 @@ int SerCom::getDistance(Walk* walk){
   tot+=distance[9];
   return tot/10;
 }
-
+ 
+//getter for armed flag
 bool SerCom::isArmed(){
   return armed;
 }
 
+//getter for autonomous flag
 bool SerCom::isAutonomous(){
   return autonomous;
 }

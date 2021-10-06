@@ -2,8 +2,11 @@
 #include "Leg.h"
 #include <PCA9685.h>  //pca9685 the servo driver module
 #include <nRF24L01.h> //nrf24l01 is the radio transceiver module
-#include <Arduino.h>
+#include <Arduino.h> //Arduino standard library
 
+/*
+ * class to move the legs to specified angles
+ */
 
 PCA9685 driver0(B000000); //addresses and initializes the motor drivers, set to 0
 PCA9685 driver1(B000001); //set to 1

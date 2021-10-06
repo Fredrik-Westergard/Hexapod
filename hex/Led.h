@@ -3,23 +3,26 @@
 
 #include "Ch.h"
 
+/*
+ * class for led control
+ */
 class Led{
   private:
-    int red = 0;
-    int green = 0;
-    int blue = 0;
-    bool serial = false;
+    int red = 0; //red variable
+    int green = 0; //green variable
+    int blue = 0; // blue variable
+    bool serial = false; //serial flag
 
   public:
-    void setColors(int r, int g, int b);
-    void toggleColors(Ch* ch);
-    void setRed(int red);
-    void setBlue(int blue);
-    void setGreen(int green);
-    int getRed();
-    int getBlue();
-    int getGreen();
-    void setSer(bool serial);
+    void setColors(int r, int g, int b); //turns the led on with the set colors
+    void toggleColors(Ch* ch); //sets the correct colors
+    void setRed(int red); //setter for red
+    void setBlue(int blue); //setter for blue
+    void setGreen(int green); // setter for green
+    int getRed(); //getter for red
+    int getBlue(); // getter for blue 
+    int getGreen(); //getter for green
+    void setSer(bool serial); //setter of serial flag
      
 };
 

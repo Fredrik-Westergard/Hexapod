@@ -1,6 +1,9 @@
 #ifndef LEG_H__
 #define LEG_H__
 
+/*
+ * class to calculate leg lengths and angles
+ */
 class Leg{
   private:
     const double SHIN = 120; //shin of robot leg constant
@@ -25,7 +28,7 @@ class Leg{
     double xOf[6] = {0,0,0,0,0,0}; //individual x offset
     double yOf[6] = {0,0,0,0,0,0}; //individual y offset
 
-    double zAo[6] = {0,0,0,0,0,0};
+    double zAo[6] = {0,0,0,0,0,0}; //individual z angle offset
     
     double lawOfCosinesSSS(double a, double b, double c); //calculate law of cosines when you have all sides 
     double lawOfCosinesSAS(double a, double b, double angle); //calculate law of cosines when you have two sides and one angle between them
@@ -41,10 +44,10 @@ public:
     double getAngleA(int pos); //get A angle, shin-tibia
     double getAngleB(int pos); //get B angle, tibia-hip
     double getAngleC(int pos); //get C angle, hip-body
-    void setZOf(double a, double b, double c, double d, double e, double f);
-    void setYOf(double a, double b, double c, double d, double e, double f);
-    void setXOf(double a, double b, double c, double d, double e, double f);
-    void setZAo(double a, double b, double c, double d, double e, double f);
+    void setZOf(double a, double b, double c, double d, double e, double f); //setter of z offset
+    void setYOf(double a, double b, double c, double d, double e, double f); //setter of y offset
+    void setXOf(double a, double b, double c, double d, double e, double f); //setter of x offset
+    void setZAo(double a, double b, double c, double d, double e, double f); //setter of z angle offset
 };
 
 #endif

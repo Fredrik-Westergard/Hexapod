@@ -1,12 +1,17 @@
 #include "Ultra.h"
 #include <Arduino.h>
 
+/*
+ * class for ultrasonic sensor
+ */
+
+//constructor
 Ultra::Ultra(){
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
 }
 
-
+//getter of distance
 int Ultra::getDistance(){
   
   digitalWrite(trig, LOW);

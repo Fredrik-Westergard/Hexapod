@@ -1,6 +1,11 @@
 #include "Walk.h"
 #include <Arduino.h>
 
+/*
+ * class for walking
+ */
+
+//function to walk on the spot
 int Walk::onSpot(int stp, int spd){
   if(stp == 1 && (int) millis() > stpMillis + spd){
     leg.setZOf(100,0,100,20,80,20);
@@ -25,6 +30,7 @@ int Walk::onSpot(int stp, int spd){
   return stp;
 }
 
+//function to move in chosen direction
 int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double zMove){
   if(ultra.getDistance() < 25 && yMove > 0){
     yMove = 0;
@@ -43,6 +49,7 @@ int Walk::moveInDirection(int stp, int spd, double yMove, double xMove, double z
   return stp;
 }
 
+//function to take the first step
 int Walk::stepIn(int stp, int spd, double yMove, double xMove, double zMove){
   rnd = 0;
   steps = 0;
@@ -73,6 +80,7 @@ int Walk::stepIn(int stp, int spd, double yMove, double xMove, double zMove){
   return stp;
 }
 
+//function to walk
 int Walk::walk(int stp, int spd, double yMove, double xMove, double zMove){
   rnd = 0;
   if(stp == 0 && (int) millis() > stpMillis + spd){    
@@ -121,6 +129,7 @@ int Walk::walk(int stp, int spd, double yMove, double xMove, double zMove){
   return stp;
 }
 
+//function to take last step
 int Walk::stepOut(int stp,int spd){
   if(stp == 0 && (int) millis() > stpMillis + spd){    
     leg.setZOf(120,-20,120,0,100,0);
@@ -181,14 +190,17 @@ int Walk::stepOut(int stp,int spd){
   return stp;
 }
 
+//getter of steps
 int Walk::getSteps(){
   return steps;
 }
 
+//setter of steps
 void Walk::setSteps(int steps){
   this->steps = steps;
 }
 
+//getter of distance from ultrasonci sensor
 int Walk::getDistance(){
   return ultra.getDistance();
 }
