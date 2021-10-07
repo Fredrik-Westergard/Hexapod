@@ -25,12 +25,12 @@ void SerCom::checkSerial(){
     return;
   }
   if(serial.substring(0,3) == "arm"){
-    Serial.println("armed");
+    Serial5.println("armed");
     armed = true;
     return;
   }
   else if(serial.substring(0,3) == "dis"){
-    Serial.println("disarmed");
+    Serial5.println("disarmed");
     armed = false;
     return;
   }
@@ -39,8 +39,9 @@ void SerCom::checkSerial(){
     return;
   }
   else if(serial.substring(0,3) == "aut"){
-    Serial.println("autonomous movement");
+    Serial5.println("autonomous movement");
     autonomous = !autonomous;
+    autoToggle = true;
   }
   
   if(armed && serial.length() > 5){
@@ -73,14 +74,14 @@ void SerCom::checkSerial(){
         return;
       }
             
-      Serial.print("Y: ");
-      Serial.print(dir[0]);
-      Serial.print(" ");
-      Serial.print("X: ");
-      Serial.print(dir[1]);
-      Serial.print(" ");
-      Serial.print("Z: ");
-      Serial.println(dir[2]);
+      Serial5.print("Y: ");
+      Serial5.print(dir[0]);
+      Serial5.print(" ");
+      Serial5.print("X: ");
+      Serial5.print(dir[1]);
+      Serial5.print(" ");
+      Serial5.print("Z: ");
+      Serial5.println(dir[2]);
     
       applySerialInput(dir[1], dir[0], dir[2]);
     }
@@ -100,14 +101,14 @@ void SerCom::applySerialInput(double x, double y, double z){
     double len2 = (y/num)*1.3;
     double len3 = ((z/num)*1.285)+0.9;
     
-    Serial.print("Y: ");
-    Serial.print(len1);
-    Serial.print(" X: ");
-    Serial.print(len2);
-    Serial.print(" Z: ");
-    Serial.print(len3);
-    Serial.print(" S: ");
-    Serial.println(num/2);
+    Serial5.print("Y: ");
+    Serial5.print(len1);
+    Serial5.print(" X: ");
+    Serial5.print(len2);
+    Serial5.print(" Z: ");
+    Serial5.print(len3);
+    Serial5.print(" S: ");
+    Serial5.println(num/2);
 
     if(memory){
       list->addToList(len1, len2, len3, num/2);
@@ -123,7 +124,7 @@ void SerCom::applySerialInput(double x, double y, double z){
 
 //function to switch memory on/off
 void SerCom::switchMemory(){
-  Serial.println("memory");
+  Serial5.println("memory");
   memory = !memory;
 
   if(memory){
@@ -136,11 +137,19 @@ void SerCom::switchMemory(){
 
 //function to use serial to move
 int SerCom::serialMove(Walk* walk, int stp, int spd){
+  if(autoToggle){
+    stepLength[0] = 0;
+    stepLength[1] = 0;
+    stepLength[2] = 0;
+    stepAmount = 0;
+    walk->setSteps(0);
+    autoToggle = false;
+  }
   if(walk->getSteps() > stepAmount-2){
     if(memory){
       if(list->getLength() > -1){
         Node* n = list->getElement(0);
-        Serial.println(n->getAmount());
+        Serial5.println(n->getAmount());
         stepLength[0] = n->getLength(0);
         stepLength[1] = n->getLength(1);
         stepLength[2] = n->getLength(2);
@@ -165,7 +174,6 @@ int SerCom::serialMove(Walk* walk, int stp, int spd){
     }
   }
   int dist = getDistance(walk);
-  Serial.println(dist);
   if(dist < 25){
      stepLength[1] = 0;
      if(stepLength[0] <= 5 || stepLength[2] <= 5){
