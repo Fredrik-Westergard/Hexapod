@@ -42,6 +42,17 @@ void SerCom::checkSerial(){
     Serial5.println("autonomous movement");
     autonomous = !autonomous;
     autoToggle = true;
+    return;
+  }
+  else if(serial.substring(0,3) == "cha"){
+    Serial5.println("channel");
+    channel = !channel;
+    return;
+  }
+  else if(serial.substring(0,3) == "ult"){
+    Serial5.println("ultra");
+    ultra = !ultra;
+    return;
   }
   
   if(armed && serial.length() > 5){
@@ -176,7 +187,7 @@ int SerCom::serialMove(Walk* walk, int stp, int spd){
   int dist = getDistance(walk);
   if(dist < 25){
      stepLength[1] = 0;
-     if(stepLength[0] <= 5 || stepLength[2] <= 5){
+     if(stepLength[0] <= 5 && stepLength[2] <= 5){
         stepLength[0] = 0;
         stepLength[2] = 0;
         stepAmount = 0;
@@ -210,14 +221,19 @@ int SerCom::autonomousMovement(Walk* walk, int stp, int spd){
 
 //function to get a filtered distance
 int SerCom::getDistance(Walk* walk){
-  int tot = 0;
-  for(int i = 0; i < 9; i++){
-    distance[i] = distance[i+1];
-    tot+= distance[i];
+  if(ultra){
+    int tot = 0;
+    for(int i = 0; i < 9; i++){
+      distance[i] = distance[i+1];
+      tot+= distance[i];
+    }
+    distance[9] = walk->getDistance();
+    tot+=distance[9];
+    return tot/10;
   }
-  distance[9] = walk->getDistance();
-  tot+=distance[9];
-  return tot/10;
+  else{
+    return 30;
+  }  
 }
  
 //getter for armed flag
@@ -228,4 +244,8 @@ bool SerCom::isArmed(){
 //getter for autonomous flag
 bool SerCom::isAutonomous(){
   return autonomous;
+}
+
+bool SerCom::isCh(){
+  return channel;
 }

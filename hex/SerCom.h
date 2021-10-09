@@ -15,6 +15,8 @@ class SerCom{
     bool memory = false; //memory flag
     bool autonomous = false; //autonomous flag
     bool autoToggle = false;
+    bool channel = true;
+    bool ultra = false;
     double stepLength[3] = {0,0,0}; //step length
     int distance[10] = {30,30,30,30,30,30,30,30,30,30}; //distance filter variable
     int stepAmount = 0; //amount of steps
@@ -29,6 +31,7 @@ class SerCom{
     int getDistance(Walk* walk); //getter of filtered distance
     bool isArmed(); //getter of armed flag
     bool isAutonomous(); //getter of autonomous flag
+    bool isCh();
 };
 
 #endif

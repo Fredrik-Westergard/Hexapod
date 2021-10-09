@@ -60,20 +60,23 @@ void setup() {
 
 //standard main loop
 void loop() {
-  //if there is new data from the radio
-  if(radio.available()){
-    //read it
-    radio.read(&str, sizeof(str));
-    //print it
-    Serial.println(str);
-    //and compile it
-    ch.buildData(str);
+  if(ser.isCh()){
+    //if there is new data from the radio
+    if(radio.available()){
+      //read it
+      radio.read(&str, sizeof(str));
+      //print it
+      Serial.println(str);
+      //and compile it
+      ch.buildData(str);
+    }
+    //if there is signal loss
+    if(ch.getMilRec()+350 < (int) millis() && ch.getMilRec()+1000 > (int) millis()){
+      //reset data
+      ch.resetData();
+    }
   }
-  //if there is signal loss
-  if(ch.getMilRec()+350 < (int) millis() && ch.getMilRec()+1000 > (int) millis()){
-    //reset data
-    ch.resetData();
-  }
+    
   //check if there is anything on serial
   ser.checkSerial();
   

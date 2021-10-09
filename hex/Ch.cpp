@@ -27,6 +27,7 @@ void Ch::compileData(){
       }
     }
   }
+  milRec = millis();
 }
 
 //function to interpret the data from the channels
@@ -48,7 +49,6 @@ void Ch::interpretData(){
   yMove = map(channel[12],0,1024,20,-20);
   xMove = map(channel[13],0,1024,20,-20);
   zMove = map(channel[10],0,1024,-15,15);
-  milRec = millis();
 
   Serial.print(yMove);
   Serial.print(" ");
