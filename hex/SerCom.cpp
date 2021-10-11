@@ -54,6 +54,16 @@ void SerCom::checkSerial(){
     ultra = !ultra;
     return;
   }
+  else if(serial.substring(0,3) == "hlp"){
+    Serial5.println("arm to arm robot");
+    Serial5.println("dis to disarm robot");
+    Serial5.println("mem to enable/disable memory");
+    Serial5.println("aut to enable/disable autonomous movement");
+    Serial5.println("cha to disable/enable remote controller");
+    Serial5.println("ult to disable/enable ultrasonic sensor");
+    Serial5.println("hlp to display help");
+    return;
+  }
   
   if(armed && serial.length() > 5){
     int neg = 1;
@@ -130,7 +140,7 @@ void SerCom::applySerialInput(double x, double y, double z){
       stepLength[2] = len3;
       stepAmount = num/2;
     }
-   }   
+  }   
 }
 
 //function to switch memory on/off
