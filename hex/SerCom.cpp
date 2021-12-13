@@ -9,6 +9,7 @@
 //constructor
 SerCom::SerCom(){
   randomSeed(analogRead(6));
+  delete list;
 }
 
 //function to check if there is serial to read and interprets it
